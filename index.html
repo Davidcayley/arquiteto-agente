@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arquiteto de Agentes — Entre Antes que Todo Mundo Descubra</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08080a;--bg2:#0e0e11;--surface:#131316;--surface2:#1a1a1f;
+  --border:#252530;--border2:#1e1e28;
+  --red:#d93020;--gold:#c8902a;--gold2:#e8aa40;
+  --cream:#f0ece4;--white:#fafaf8;
+  --text:#8888a0;--text2:#b0b0c8;--muted:#44445a;--green:#22c55e;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--cream);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;line-height:1.6;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border);}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;}
+
+.ubar{position:sticky;top:0;z-index:800;background:var(--red);padding:11px 20px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;}
+.ubar-text{font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.85);}
+.ubar-timer{font-family:'DM Sans',sans-serif;font-weight:600;font-size:1rem;color:#fff;background:rgba(0,0,0,0.25);padding:3px 14px;letter-spacing:0.05em;}
+.ubar-vagas{font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:0.15em;color:rgba(255,255,255,0.6);}
+.ubar-vagas strong{color:#ffe066;}
+
+nav{padding:18px 0;border-bottom:1px solid var(--border);}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;color:var(--cream);}
+.nav-tag{font-family:'Courier Prime',monospace;font-size:9px;letter-spacing:0.28em;text-transform:uppercase;color:var(--muted);}
+.nav-cta{font-family:'Courier Prime',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);border:1px solid var(--red);padding:7px 16px;text-decoration:none;transition:all .2s;}
+.nav-cta:hover{background:var(--red);color:#fff;}
+
+.w{max-width:860px;margin:0 auto;padding:0 40px;}
+.wf{max-width:1100px;margin:0 auto;padding:0 40px;}
+
+/* HERO */
+.hero{padding:100px 0 80px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 65% -5%,rgba(217,48,32,0.07) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at -5% 85%,rgba(200,144,42,0.05) 0%,transparent 60%);pointer-events:none;}
+.hero-grid{display:grid;grid-template-columns:1fr 360px;gap:60px;align-items:start;}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
+.eyebrow-dot{width:6px;height:6px;background:var(--red);border-radius:50%;animation:pulse 2s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-eyebrow span{font-family:'Courier Prime',monospace;font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--red);}
+.hero-h1{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,5vw,4.4rem);font-weight:900;line-height:1.02;letter-spacing:-.02em;color:var(--white);margin-bottom:18px;}
+.hero-h1 em{font-style:italic;color:var(--red);font-weight:400;}
+.hero-bar{width:44px;height:2px;background:var(--red);margin-bottom:22px;}
+.hero-sub{font-size:1.02rem;color:var(--text2);line-height:1.78;font-weight:300;max-width:460px;margin-bottom:32px;}
+.hero-sub strong{color:var(--cream);font-weight:500;}
+.hero-btns{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.btn-main{display:inline-flex;align-items:center;gap:9px;background:var(--red);color:#fff;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.87rem;letter-spacing:.04em;padding:15px 28px;text-decoration:none;border:none;cursor:pointer;transition:background .2s;}
+.btn-main:hover{background:#b82818;}
+.btn-ghost-sm{font-family:'Courier Prime',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
+.btn-ghost-sm:hover{color:var(--text2);}
+
+/* HERO CARD */
+.hcard{background:var(--surface);border:1px solid var(--border);overflow:hidden;position:relative;}
+.hcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),var(--gold));}
+.hcard-inner{padding:28px;}
+.hc-label{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;}
+.hc-old{font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:var(--muted);text-decoration:line-through;margin-bottom:2px;}
+.hc-price{font-family:'Playfair Display',serif;font-size:3.6rem;font-weight:900;color:var(--white);line-height:1;margin-bottom:3px;}
+.hc-note{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:22px;}
+.hc-hr{border:none;border-top:1px solid var(--border);margin-bottom:18px;}
+.hc-row{display:flex;align-items:flex-start;gap:9px;padding:6px 0;font-size:.81rem;color:var(--text2);border-bottom:1px solid var(--border2);}
+.hc-row:last-of-type{border-bottom:none;}
+.hc-chk{color:var(--green);flex-shrink:0;font-size:.72rem;margin-top:2px;}
+.hc-btn{display:block;background:var(--red);color:#fff;text-align:center;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.84rem;padding:13px;margin-top:20px;text-decoration:none;transition:background .2s;letter-spacing:.03em;}
+.hc-btn:hover{background:#b82818;}
+.hc-guar{display:flex;align-items:center;gap:7px;margin-top:10px;justify-content:center;}
+.hc-guar span{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
+
+/* STATS */
+.stats{background:var(--surface);border-bottom:1px solid var(--border);}
+.stats-inner{display:grid;grid-template-columns:repeat(4,1fr);}
+.stat{padding:26px 32px;border-right:1px solid var(--border);}
+.stat:last-child{border-right:none;}
+.stat-v{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--white);line-height:1;margin-bottom:3px;}
+.stat-v span{color:var(--red);}
+.stat-l{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+
+/* SECTIONS */
+.sec{padding:80px 0;border-bottom:1px solid var(--border);}
+.sec.dark{background:var(--bg2);}
+.eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.eyebrow::before{content:'';width:18px;height:1px;background:var(--red);}
+.eyebrow span{font-family:'Courier Prime',monospace;font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--red);}
+.sh{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,3.8vw,2.8rem);font-weight:700;line-height:1.1;color:var(--white);margin-bottom:18px;}
+.sh em{font-style:italic;font-weight:400;color:var(--red);}
+.bp{font-size:.96rem;color:var(--text2);line-height:1.85;margin-bottom:18px;font-weight:300;}
+.bp strong{color:var(--cream);font-weight:500;}
+.bp em{font-style:italic;color:var(--gold2);}
+
+/* HOOK */
+.hook-rows{margin:28px 0;}
+.hook-row{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3.5vw,2.6rem);font-weight:400;color:var(--text);line-height:1.2;padding:14px 0;border-bottom:1px solid var(--border2);display:flex;align-items:baseline;gap:16px;}
+.hook-row.final{color:var(--white);font-weight:700;font-style:italic;border-bottom:none;font-size:clamp(1.7rem,4vw,3rem);}
+.hook-row .accent{color:var(--red);}
+.hook-n{font-family:'Courier Prime',monospace;font-size:9px;color:var(--muted);letter-spacing:.1em;width:28px;flex-shrink:0;}
+.callout{border:1px solid var(--border);padding:18px 22px;margin:18px 0;background:var(--surface);}
+.callout.red{border-color:var(--red);background:rgba(217,48,32,0.04);}
+.callout.gold{border-color:var(--gold);background:rgba(200,144,42,0.05);}
+.cl{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:7px;}
+.callout.red .cl{color:var(--red);}
+.callout.gold .cl{color:var(--gold2);}
+.callout p{font-size:.85rem;color:var(--text2);line-height:1.7;}
+.callout p strong{color:var(--cream);}
+
+/* MECHANISM */
+.mech-compare{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin:28px 0;}
+.mc-col{background:var(--surface);padding:24px;}
+.mc-col.good{background:var(--surface2);border-left:2px solid var(--red);}
+.mc-head{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:14px;}
+.mc-col:first-child .mc-head{color:var(--muted);}
+.mc-col.good .mc-head{color:var(--red);}
+.mc-item{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--border2);font-size:.83rem;}
+.mc-item:last-child{border-bottom:none;}
+.mc-col:first-child .mc-item{color:var(--muted);}
+.mc-col.good .mc-item{color:var(--text2);}
+.mc-x{color:rgba(217,48,32,.5);flex-shrink:0;font-size:.72rem;}
+.mc-v{color:var(--green);flex-shrink:0;font-size:.72rem;}
+.mech-quote{border-left:3px solid var(--red);padding:14px 20px;margin:24px 0;background:rgba(217,48,32,.04);}
+.mech-quote p{font-family:'Playfair Display',serif;font-size:1.15rem;font-style:italic;color:var(--cream);line-height:1.5;}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+.pillar{background:var(--surface);padding:22px 18px;}
+.pil-n{font-family:'Playfair Display',serif;font-size:2.2rem;font-style:italic;color:var(--border);line-height:1;margin-bottom:8px;}
+.pil-t{font-size:.87rem;font-weight:500;color:var(--white);margin-bottom:5px;}
+.pil-d{font-size:.77rem;color:var(--text);line-height:1.6;}
+
+/* TABLE */
+.tbl-wrap{border:1px solid var(--border);overflow:hidden;margin:22px 0;}
+table{width:100%;border-collapse:collapse;}
+th{background:var(--surface2);font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);padding:11px 15px;text-align:left;font-weight:400;border-bottom:1px solid var(--border);}
+td{padding:12px 15px;border-bottom:1px solid var(--border2);font-size:.83rem;color:var(--text2);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.01);}
+td:first-child{color:var(--cream);font-weight:500;}
+.tg{color:var(--green);font-family:'Courier Prime',monospace;font-weight:700;}
+
+/* FIT */
+.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin:22px 0;}
+.fit-col{background:var(--surface);}
+.fit-hd{padding:12px 18px;border-bottom:1px solid var(--border);font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;display:flex;align-items:center;gap:7px;}
+.fit-hd.y{color:var(--green);background:rgba(34,197,94,.04);}
+.fit-hd.n{color:var(--red);background:rgba(217,48,32,.04);}
+.fdot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.fdot.y{background:var(--green);}
+.fdot.n{background:var(--red);}
+.fit-item{padding:11px 18px;border-bottom:1px solid var(--border2);font-size:.81rem;color:var(--text);line-height:1.5;display:flex;gap:9px;}
+.fit-item:last-child{border-bottom:none;}
+.fit-col.yes .fit-item::before{content:'✓';color:var(--green);flex-shrink:0;font-weight:600;font-size:.72rem;margin-top:2px;}
+.fit-col.no .fit-item::before{content:'✕';color:var(--red);flex-shrink:0;font-weight:600;font-size:.72rem;margin-top:2px;}
+.fit-item strong{color:var(--cream);}
+
+/* TESTIMONIALS */
+.testi-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin:22px 0;}
+.testi{background:var(--surface);padding:22px;}
+.testi-txt{font-family:'Playfair Display',serif;font-size:.93rem;font-style:italic;color:var(--text2);line-height:1.7;margin-bottom:14px;position:relative;padding-top:6px;}
+.testi-txt::before{content:'\201C';position:absolute;top:-6px;left:-3px;font-size:2.2rem;color:var(--red);opacity:.25;line-height:1;}
+.testi-auth{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);}
+.testi-auth strong{color:var(--gold2);}
+
+/* OFFER */
+.offer-sec{padding:80px 0 0;}
+.pblock{background:var(--surface);border:1px solid var(--border);overflow:hidden;margin-bottom:2px;}
+.pblock.gold-border{border-color:var(--gold);}
+.pb-top-line{height:2px;}
+.pb-top-line.red{background:linear-gradient(90deg,var(--red),transparent);}
+.pb-top-line.gold{background:linear-gradient(90deg,var(--gold),transparent);}
+.pb-top-line.dim{background:linear-gradient(90deg,rgba(217,48,32,.4),transparent);}
+.pb-body{padding:38px;}
+.pb-eye{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.pb-name{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3.2vw,2.2rem);font-style:italic;color:var(--white);line-height:1.1;margin-bottom:12px;}
+.pb-tag{font-size:.88rem;color:var(--text);line-height:1.72;max-width:520px;margin-bottom:22px;}
+.pb-tag strong{color:var(--cream);}
+.price-row{display:flex;align-items:flex-end;gap:14px;margin-bottom:22px;flex-wrap:wrap;}
+.p-old{font-family:'Playfair Display',serif;font-size:1.4rem;font-style:italic;color:var(--muted);text-decoration:line-through;}
+.p-new{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,5.5vw,4.2rem);font-weight:900;color:var(--white);line-height:1;}
+.p-note{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);line-height:1.85;padding-bottom:3px;}
+.inc-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px 18px;padding:18px 0;border-top:1px solid var(--border);}
+.inc-item{font-size:.79rem;color:var(--text);display:flex;gap:7px;align-items:flex-start;line-height:1.4;}
+.inc-item::before{content:'✓';color:var(--green);flex-shrink:0;font-weight:600;font-size:.7rem;margin-top:2px;}
+.pb-actions{margin-top:24px;display:flex;flex-direction:column;gap:8px;align-items:flex-start;}
+.btn-buy{display:inline-flex;align-items:center;gap:9px;background:var(--red);color:#fff;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.88rem;padding:15px 30px;text-decoration:none;border:none;cursor:pointer;transition:background .2s;letter-spacing:.03em;}
+.btn-buy:hover{background:#b82818;}
+.btn-buy.gld{background:var(--gold);}
+.btn-buy.gld:hover{background:#a87020;}
+.btn-note{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+.btn-skip{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--border);padding:8px 14px;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block;}
+.btn-skip:hover{color:var(--text2);border-color:var(--muted);}
+.up-badge{display:inline-flex;align-items:center;gap:7px;margin-bottom:12px;}
+.up-dot{width:5px;height:5px;border-radius:50%;}
+.up-dot.gld{background:var(--gold2);}
+.up-dot.rd{background:var(--red);}
+.up-lbl{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.24em;text-transform:uppercase;}
+.up-lbl.gld{color:var(--gold2);}
+.up-lbl.dim{color:var(--text);}
+.mod-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border2);border:1px solid var(--border);margin:18px 0;}
+.mod{background:var(--bg2);padding:16px;}
+.mod h5{font-size:.82rem;font-weight:500;color:var(--cream);margin-bottom:4px;}
+.mod p{font-size:.75rem;color:var(--text);line-height:1.55;}
+.mod-tag{display:inline-block;font-family:'Courier Prime',monospace;font-size:7px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold);padding:2px 7px;margin-top:7px;}
+.cond{background:rgba(255,255,255,.02);border:1px solid var(--border);padding:14px 18px;margin:14px 0;display:flex;gap:11px;}
+.cond-i{font-family:'Playfair Display',serif;font-size:1.3rem;font-style:italic;color:var(--muted);flex-shrink:0;line-height:1;}
+.cond p{font-size:.81rem;color:var(--text);line-height:1.65;}
+.cond p strong{color:var(--cream);}
+
+/* GUARANTEE */
+.guar{border:1px solid var(--border);padding:22px 26px;display:flex;gap:18px;align-items:flex-start;background:var(--surface);margin:24px 0;}
+.guar-n{font-family:'Playfair Display',serif;font-size:2.8rem;font-style:italic;font-weight:900;color:var(--gold);line-height:1;flex-shrink:0;}
+.guar-b h4{font-size:.88rem;font-weight:500;color:var(--cream);margin-bottom:3px;}
+.guar-b p{font-size:.79rem;color:var(--text);line-height:1.6;}
+
+/* URGENCY FINAL */
+.uf{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 0;}
+.uf-stmt{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,4rem);font-weight:900;line-height:1.0;color:var(--white);margin-bottom:22px;}
+.uf-stmt em{font-style:italic;color:var(--red);font-weight:400;}
+
+/* FAQ */
+.faq-sec{padding:80px 0;border-bottom:1px solid var(--border);}
+.faq-item{border-bottom:1px solid var(--border2);padding:17px 0;}
+.faq-item:first-child{border-top:1px solid var(--border2);}
+.faq-q{font-size:.89rem;font-weight:500;color:var(--cream);margin-bottom:5px;}
+.faq-a{font-size:.81rem;color:var(--text);line-height:1.7;}
+.faq-a strong{color:var(--text2);}
+
+footer{padding:34px 0;text-align:center;}
+footer p{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);line-height:2.2;}
+
+@media(max-width:800px){
+  .nav-inner,.w,.wf{padding:0 20px;}
+  .hero-grid{grid-template-columns:1fr;}
+  .hcard{display:none;}
+  .stats-inner{grid-template-columns:1fr 1fr;}
+  .mech-compare,.fit-grid,.testi-grid,.inc-grid,.mod-grid,.pillars{grid-template-columns:1fr;}
+  .pb-body{padding:22px;}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.hero{animation:fadeUp .7s ease both;}
+</style>
+</head>
+<body>
+
+<div class="ubar">
+  <span class="ubar-text">⬛ Este preço fecha em:</span>
+  <span class="ubar-timer" id="timer">23:59:59</span>
+  <span class="ubar-vagas">— vagas abertas: <strong id="vagas">14</strong></span>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <span class="nav-tag">Produto digital · 2026</span>
+    <span class="nav-logo">Arquiteto de Agentes</span>
+    <a href="#oferta" class="nav-cta">Ver oferta →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="wf">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow"><div class="eyebrow-dot"></div><span>Acesso restrito · Edição de lançamento</span></div>
+        <h1 class="hero-h1">Empresas pagam<br>R$3.000 a R$15.000<br>por isso. <em>Ninguém<br>está te ensinando.</em></h1>
+        <div class="hero-bar"></div>
+        <p class="hero-sub">Agentes de IA para pequenos negócios é o mercado mais subexplorado do Brasil em 2026. <strong>Sem programar. Sem experiência técnica. Com as ferramentas certas.</strong></p>
+        <div class="hero-btns">
+          <a href="#oferta" class="btn-main">Quero entrar agora →</a>
+          <a href="#mecanismo" class="btn-ghost-sm">Como funciona ↓</a>
+        </div>
+      </div>
+      <div class="hcard">
+        <div class="hcard-inner">
+          <div class="hc-label">// E-book · Acesso imediato</div>
+          <div class="hc-old">R$297</div>
+          <div class="hc-price">R$97</div>
+          <div class="hc-note">Pagamento único · Acesso vitalício</div>
+          <hr class="hc-hr">
+          <div class="hc-row"><span class="hc-chk">✓</span>E-book completo — 40 páginas</div>
+          <div class="hc-row"><span class="hc-chk">✓</span>Mapa de 6 nichos pagantes</div>
+          <div class="hc-row"><span class="hc-chk">✓</span>Script de prospecção WhatsApp</div>
+          <div class="hc-row"><span class="hc-chk">✓</span>Planilha de precificação</div>
+          <div class="hc-row"><span class="hc-chk">✓</span>System prompt pronto para usar</div>
+          <div class="hc-row"><span class="hc-chk">✓</span>Roteiro de reunião de venda</div>
+          <a href="#oferta" class="hc-btn">Garantir acesso — R$97</a>
+          <div class="hc-guar"><span class="hc-chk">✓</span><span>Garantia incondicional de 7 dias</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="wf">
+    <div class="stats-inner">
+      <div class="stat"><div class="stat-v">6<span>+</span></div><div class="stat-l">Nichos mapeados</div></div>
+      <div class="stat"><div class="stat-v">R$<span>0</span></div><div class="stat-l">Custo inicial de ferramentas</div></div>
+      <div class="stat"><div class="stat-v">30</div><div class="stat-l">Dias pro primeiro cliente</div></div>
+      <div class="stat"><div class="stat-v">8<span>×</span></div><div class="stat-l">Margem média por cliente</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- HOOK -->
+<section class="sec">
+  <div class="w">
+    <div class="eyebrow"><span>// O problema real</span></div>
+    <h2 class="sh">O que <em>ninguém</em><br>está te contando</h2>
+    <div class="hook-rows">
+      <div class="hook-row"><span class="hook-n">01</span>Você já ouviu falar em IA.</div>
+      <div class="hook-row"><span class="hook-n">02</span>Você já usou o ChatGPT.</div>
+      <div class="hook-row"><span class="hook-n">03</span>Já fez fotinha do Gemini.</div>
+      <div class="hook-row final"><span class="hook-n">→</span><span>Mas ninguém te conta <span class="accent">como fazer dinheiro de verdade com IA.</span></span></div>
+    </div>
+    <p class="bp">O dinheiro não está em criar conteúdo com IA. Não está em usar o ChatGPT para escrever e-mail. Está em construir <strong>estruturas de IA que trabalham por empresas inteiras enquanto o dono dorme</strong> — e cobrar por isso mensalmente.</p>
+    <div class="callout red">
+      <div class="cl">▸ A janela aberta agora</div>
+      <p>Em 2005, quem aprendeu HTML ficou rico. Em 2012, quem entrou no Facebook Ads antes de todo mundo virou referência. Em 2018, quem cresceu no Instagram orgânico construiu audiências milionárias. <strong>Agentes de IA para PMEs é 2026.</strong> Quem entrar agora pega o mercado. Quem esperar vai disputar preço com cinquenta pessoas fazendo a mesma coisa.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MECANISMO -->
+<section class="sec dark" id="mecanismo">
+  <div class="w">
+    <div class="eyebrow"><span>// O mecanismo único</span></div>
+    <h2 class="sh">Por que qualquer pessoa<br>consegue fazer isso —<br><em>O Efeito Intérprete.</em></h2>
+    <p class="bp">A pergunta que todo mundo tem: <strong>"Ok, mas por que eu conseguiria fazer isso?"</strong> A resposta não tem nada a ver com tecnologia.</p>
+    <div class="mech-compare">
+      <div class="mc-col">
+        <div class="mc-head">// O que todo mundo pensa que precisa</div>
+        <div class="mc-item"><span class="mc-x">✕</span>Saber programar em Python</div>
+        <div class="mc-item"><span class="mc-x">✕</span>Entender de machine learning</div>
+        <div class="mc-item"><span class="mc-x">✕</span>Ter formação em tecnologia</div>
+        <div class="mc-item"><span class="mc-x">✕</span>Construir modelos de IA do zero</div>
+        <div class="mc-item"><span class="mc-x">✕</span>Anos de experiência técnica</div>
+      </div>
+      <div class="mc-col good">
+        <div class="mc-head">// O que realmente importa</div>
+        <div class="mc-item"><span class="mc-v">✓</span>Saber ler o problema do negócio</div>
+        <div class="mc-item"><span class="mc-v">✓</span>Traduzir a dor em solução técnica</div>
+        <div class="mc-item"><span class="mc-v">✓</span>Conectar ferramentas que já existem</div>
+        <div class="mc-item"><span class="mc-v">✓</span>Apresentar o valor na língua do cliente</div>
+        <div class="mc-item"><span class="mc-v">✓</span>Ser o único na sala que sabe o que existe</div>
+      </div>
+    </div>
+    <div class="mech-quote"><p>"O desenvolvedor constrói a faca. O Arquiteto sabe qual faca usar, quando usar — e cobra por isso."</p></div>
+    <p class="bp">O GPT-4o já existe. O n8n já existe. A Z-API já existe. <strong>O que não existe é a pessoa que sabe combinar essas peças para resolver o problema específico de uma clínica estética em Fortaleza.</strong> Essa pessoa é você.</p>
+    <div class="pillars">
+      <div class="pillar"><div class="pil-n">01</div><div class="pil-t">Lê o negócio</div><div class="pil-d">Identifica onde está a dor que custa dinheiro — não a que o empresário descreve, a real.</div></div>
+      <div class="pillar"><div class="pil-n">02</div><div class="pil-t">Arquiteta a solução</div><div class="pil-d">Combina as ferramentas certas para o problema certo. Sem programar, sem construir do zero.</div></div>
+      <div class="pillar"><div class="pil-n">03</div><div class="pil-t">Vende o resultado</div><div class="pil-d">Nunca vende "agente de IA". Vende "a recepcionista que nunca dorme". O cliente abre a carteira.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MERCADO -->
+<section class="sec">
+  <div class="w">
+    <div class="eyebrow"><span>// Quem está comprando</span></div>
+    <h2 class="sh">O mercado que ninguém<br><em>está te mostrando</em></h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Nicho</th><th>Dor principal</th><th>Ticket mensal</th></tr></thead>
+        <tbody>
+          <tr><td>Clínicas estéticas</td><td>Agendamentos perdidos fora do horário</td><td class="tg">R$800–R$1.800</td></tr>
+          <tr><td>Imobiliárias</td><td>Leads que somem sem resposta em 5 min</td><td class="tg">R$1.200–R$3.000</td></tr>
+          <tr><td>Clínicas odontológicas</td><td>No-show e recall manual ineficiente</td><td class="tg">R$600–R$1.400</td></tr>
+          <tr><td>Escritórios de advocacia</td><td>Triagem de casos e agendamento</td><td class="tg">R$900–R$2.500</td></tr>
+          <tr><td>Academias e estúdios</td><td>Churn silencioso — aluno some</td><td class="tg">R$500–R$1.200</td></tr>
+          <tr><td>E-commerce</td><td>Abandono de carrinho e SAC sobrecarregado</td><td class="tg">R$1.500–R$4.000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout gold">
+      <div class="cl">▸ O cálculo real</div>
+      <p>Um cliente de R$1.000/mês. Custo de ferramentas: R$100–R$130. <strong>Margem líquida: ~R$870/mês por cliente.</strong> Três clientes: R$2.610/mês recorrentes. A estrutura leva 10–15 horas para montar — depois roda sozinha.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PARA QUEM É -->
+<section class="sec dark">
+  <div class="w">
+    <div class="eyebrow"><span>// Leia antes de comprar</span></div>
+    <h2 class="sh">Seja <em>honesto</em><br>com você mesmo.</h2>
+    <p class="bp">Não quero o seu dinheiro se isso não é para você.</p>
+    <div class="fit-grid">
+      <div class="fit-col yes">
+        <div class="fit-hd y"><div class="fdot y"></div>É pra você se...</div>
+        <div class="fit-item"><strong>Você quer renda recorrente real</strong> — não passiva de mentira. Construída com esforço no primeiro mês.</div>
+        <div class="fit-item"><strong>Você está disposto a aprender do zero.</strong> Sem programação — mas com dedicação de seguir um passo a passo.</div>
+        <div class="fit-item"><strong>Você tem 1–2 horas por dia</strong> nas primeiras semanas. Sem esse tempo, nada funciona.</div>
+        <div class="fit-item"><strong>Você prefere vender para empresas</strong> — ticket maior, mais estabilidade, menos drama.</div>
+        <div class="fit-item"><strong>Você age antes de estar pronto.</strong> Quem espera dominar tudo nunca fecha o primeiro cliente.</div>
+        <div class="fit-item"><strong>Você quer entrar cedo</strong> — a vantagem aqui é temporal e você entende isso.</div>
+      </div>
+      <div class="fit-col no">
+        <div class="fit-hd n"><div class="fdot n"></div>Não é pra você se...</div>
+        <div class="fit-item"><strong>Você quer renda passiva imediata.</strong> Isso não existe. Existe renda recorrente construída com trabalho real.</div>
+        <div class="fit-item"><strong>Você não tem paciência com ferramentas novas.</strong> O material explica tudo — mas você precisa testar e errar.</div>
+        <div class="fit-item"><strong>Você quer resultado na primeira semana.</strong> O ciclo de prospecção → reunião → fechamento leva tempo.</div>
+        <div class="fit-item"><strong>Sua agenda já está lotada.</strong> Sem margem para executar, nenhum conhecimento funciona.</div>
+        <div class="fit-item"><strong>Você quer que alguém faça por você.</strong> O material te ensina — não faz por você.</div>
+        <div class="fit-item"><strong>Você já desistiu de três projetos</strong> antes dos 60 dias. Resolva esse padrão primeiro.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPOIMENTOS -->
+<section class="sec">
+  <div class="w">
+    <div class="eyebrow"><span>// Quem já está no mercado</span></div>
+    <h2 class="sh">Resultados de quem<br><em>executou de verdade.</em></h2>
+    <div class="testi-grid">
+      <div class="testi"><p class="testi-txt">Montei meu primeiro agente para uma clínica em Fortaleza em 3 dias. Eles pagam R$900 por mês. Nunca tinha tocado em automação antes.</p><div class="testi-auth"><strong>Camila R.</strong> · Fortaleza, CE</div></div>
+      <div class="testi"><p class="testi-txt">Já tentei vender curso, já tentei social media. Isso é diferente — o cliente entende que precisa e paga sem questionar o preço.</p><div class="testi-auth"><strong>Fernanda M.</strong> · São Paulo, SP</div></div>
+      <div class="testi"><p class="testi-txt">Assustei quando vi o ticket que as pessoas cobram. Pensei que era mentira. Não é. Em 6 semanas fechei dois clientes recorrentes.</p><div class="testi-auth"><strong>Juliana T.</strong> · Belo Horizonte, MG</div></div>
+      <div class="testi"><p class="testi-txt">O script de prospecção sozinho vale 10x o que paguei. Mandei para 12 contatos, 3 responderam querendo apresentação.</p><div class="testi-auth"><strong>Beatriz C.</strong> · Recife, PE</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- OFERTA -->
+<section class="offer-sec" id="oferta">
+  <div class="w">
+    <div class="eyebrow"><span>// A oferta completa</span></div>
+    <h2 class="sh">Três níveis.<br><em>Você escolhe até onde ir.</em></h2>
+    <p class="bp">Cada nível é opcional. Você começa pelo e-book e decide se quer ir mais fundo.</p>
+  </div>
+
+  <!-- PRODUTO BASE -->
+  <div class="w" style="margin-top:28px;">
+    <div class="pblock">
+      <div class="pb-top-line red"></div>
+      <div class="pb-body">
+        <div class="pb-eye">// Nível 01 · Produto principal</div>
+        <div class="pb-name">E-book Arquiteto de Agentes — Acesso Completo</div>
+        <div class="pb-tag">O mapa completo do mercado de agentes de IA: ferramentas, nichos, precificação, prospecção e como fechar o primeiro cliente. <strong>Sem programação. Sem enrolação.</strong></div>
+        <div class="price-row">
+          <div class="p-old">R$297</div>
+          <div class="p-new">R$97</div>
+          <div class="p-note">PAGAMENTO ÚNICO<br>SEM ASSINATURA<br>ACESSO VITALÍCIO</div>
+        </div>
+        <div class="inc-grid">
+          <div class="inc-item">E-book completo — 40 páginas</div>
+          <div class="inc-item">Mapa de 6 nichos pagantes</div>
+          <div class="inc-item">Script de prospecção WhatsApp</div>
+          <div class="inc-item">Planilha de precificação</div>
+          <div class="inc-item">Lista das 8 ferramentas grátis</div>
+          <div class="inc-item">Roteiro de reunião de venda</div>
+          <div class="inc-item">System prompt modelo pronto</div>
+          <div class="inc-item">Garantia de 7 dias</div>
+        </div>
+        <div class="pb-actions">
+          <a href="#" class="btn-buy">Quero o E-book — R$97 →</a>
+          <span class="btn-note">Pix, cartão ou boleto · Acesso em menos de 2 minutos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPSELL 1 -->
+  <div class="w" style="margin-top:2px;">
+    <div class="pblock gold-border">
+      <div class="pb-top-line gold"></div>
+      <div class="pb-body">
+        <div class="up-badge"><div class="up-dot gld"></div><span class="up-lbl gld">// Upgrade Nível 02 — disponível após a compra</span></div>
+        <div class="pb-name" style="color:var(--gold2);">Kit Fluxos Prontos — Cole, Configure, Entregue.</div>
+        <div class="pb-tag">Você leu o e-book e sabe o que fazer. Agora imagine não precisar construir o fluxo do zero — só <strong>copiar o JSON, colar no n8n, configurar os dados do cliente e entregar.</strong></div>
+        <div class="price-row">
+          <div class="p-new" style="color:var(--gold2);font-size:3.2rem;">R$47</div>
+          <div class="p-note">PAGAMENTO ÚNICO<br>ACESSO VITALÍCIO<br>NOVOS FLUXOS INCLUSOS</div>
+        </div>
+        <div class="mod-grid">
+          <div class="mod"><h5>Fluxo 01 — Atendimento WhatsApp (Clínica)</h5><p>JSON completo do agente de atendimento 24h. Inclui memória, filtros, prompt e envio de resposta.</p><span class="mod-tag">Pronto para usar</span></div>
+          <div class="mod"><h5>Fluxo 02 — Agendamento + Google Calendar</h5><p>Agente que verifica agenda, agenda consulta e envia confirmação automática.</p><span class="mod-tag">Pronto para usar</span></div>
+          <div class="mod"><h5>Fluxo 03 — Qualificação de Leads (Imobiliária)</h5><p>Recebe lead, qualifica com 5 perguntas, pontua e notifica o corretor só dos leads quentes.</p><span class="mod-tag">Pronto para usar</span></div>
+          <div class="mod"><h5>Fluxo 04 — Recall de Pacientes (Odontologia)</h5><p>Identifica pacientes inativos há 60+ dias e dispara sequência de reativação automática.</p><span class="mod-tag">Pronto para usar</span></div>
+          <div class="mod"><h5>Fluxo 05 — SAC + Pós-venda (E-commerce)</h5><p>Atendimento pós-venda: rastreio, trocas, dúvidas e escalonamento para humano.</p><span class="mod-tag">Pronto para usar</span></div>
+          <div class="mod" style="border:1px solid rgba(200,144,42,.2);background:rgba(200,144,42,.04);"><h5 style="color:var(--gold2);">+ Novos fluxos a cada nicho novo</h5><p>Compradores recebem cada novo fluxo automaticamente — sem pagar nada a mais.</p><span class="mod-tag">Acesso vitalício</span></div>
+        </div>
+        <div class="cond"><div class="cond-i">↯</div><p>Com o Kit, você reduz de 8–15 horas para <strong>2–4 horas por cliente.</strong> O esqueleto já está pronto — você só personaliza os dados.</p></div>
+        <div class="pb-actions">
+          <a href="#" class="btn-buy gld">E-book + Kit Fluxos — R$144 →</a>
+          <a href="#" class="btn-skip">Não, prefiro só o e-book por enquanto</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPSELL 2 -->
+  <div class="w" style="margin-top:2px;margin-bottom:56px;">
+    <div class="pblock">
+      <div class="pb-top-line dim"></div>
+      <div class="pb-body">
+        <div class="up-badge"><div class="up-dot rd"></div><span class="up-lbl dim">// Upgrade Nível 03 — acompanhamento completo</span></div>
+        <div class="pb-name">Mentoria Arquiteto de Agentes — Até Fechar o Primeiro Cliente.</div>
+        <div class="pb-tag">Vídeos com a tela real + sessões ao vivo mensais + suporte direto + acompanhamento <strong>até você fechar o primeiro contrato.</strong></div>
+        <div class="price-row">
+          <div class="p-new" style="font-size:3.2rem;">R$297</div>
+          <div class="p-note">POR MÊS<br>SEM FIDELIDADE MÍNIMA<br>FIQUE ATÉ TER RESULTADO</div>
+        </div>
+        <div class="mod-grid">
+          <div class="mod"><h5>Aulas em vídeo com tela real</h5><p>Cada fase do e-book tem um vídeo. Você assiste, pausa, replica. Só execução.</p></div>
+          <div class="mod"><h5>Sessões ao vivo mensais</h5><p>Tira-dúvidas em grupo uma vez por mês. Você sai com o próximo passo definido.</p></div>
+          <div class="mod"><h5>Revisão da sua estrutura</h5><p>Antes de mostrar pro cliente, manda o fluxo para revisão. Feedback em 48h.</p></div>
+          <div class="mod"><h5>Suporte WhatsApp dias úteis</h5><p>Canal direto para dúvidas técnicas, precificação e segunda opinião.</p></div>
+          <div class="mod"><h5>Scripts e templates mensais</h5><p>Novos scripts de prospecção e modelos de proposta todo mês.</p></div>
+          <div class="mod"><h5>Grupo privado de arquitetos</h5><p>Troca de experiências, indicações, dúvidas e casos reais.</p></div>
+        </div>
+        <div class="cond"><div class="cond-i">↻</div><p>Cancele quando quiser. A proposta é simples: <strong>fique até fechar o primeiro cliente.</strong> Um único contrato de R$800/mês já paga a mentoria com sobra.</p></div>
+        <div class="pb-actions">
+          <a href="#" class="btn-buy">E-book + Kit + Mentoria — R$97 + R$47 + R$297/mês →</a>
+          <a href="#" class="btn-skip">Não, vou começar só com o e-book</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GUARANTEE -->
+<div class="w" style="padding-bottom:56px;">
+  <div class="guar">
+    <div class="guar-n">7</div>
+    <div class="guar-b">
+      <h4>Garantia incondicional de 7 dias</h4>
+      <p>Se você acessar o material e sentir que não era o que esperava — por qualquer motivo — devolvo 100% do valor. Sem perguntas, sem burocracia. O risco é completamente meu.</p>
+    </div>
+  </div>
+</div>
+
+<!-- URGÊNCIA FINAL -->
+<section class="uf">
+  <div class="w">
+    <div class="eyebrow"><span>// Antes de fechar essa página</span></div>
+    <div class="uf-stmt">Este mercado<br>vai <em>saturar.</em><br>Não sei quando.</div>
+    <p class="bp">Pode ser em 8 meses. Pode ser em 2 anos. Mas vai. <strong>Quando isso acontecer, quem já tiver clientes recorrentes vai continuar lucrando. Quem entrar depois vai disputar preço com cinquenta pessoas fazendo a mesma coisa.</strong></p>
+    <p class="bp">O risco de não tentar é infinitamente maior do que o risco de R$97.</p>
+    <div style="display:flex;flex-direction:column;gap:9px;align-items:flex-start;margin-top:32px;">
+      <a href="#oferta" class="btn-buy">Garantir meu acesso agora — R$97 →</a>
+      <span class="btn-note">Pagamento único · Garantia 7 dias · Acesso em 2 minutos</span>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-sec">
+  <div class="w">
+    <div class="eyebrow"><span>// Dúvidas frequentes</span></div>
+    <h2 class="sh">Perguntas que<br><em>você provavelmente tem.</em></h2>
+    <div class="faq-item"><div class="faq-q">Preciso saber programar?</div><div class="faq-a">Não. As ferramentas são no-code e low-code — você arrasta, conecta e configura. Se você sabe usar WhatsApp e Google, você consegue.</div></div>
+    <div class="faq-item"><div class="faq-q">O que são os fluxos JSON do Kit?</div><div class="faq-a">São os workflows do n8n exportados em formato JSON. Você importa com um clique e o fluxo aparece já montado. <strong>Você só configura os dados do cliente.</strong> Reduz 8–15 horas de trabalho para 2–4 horas.</div></div>
+    <div class="faq-item"><div class="faq-q">Funciona para qualquer cidade do Brasil?</div><div class="faq-a">Sim. A prospecção é por WhatsApp e Instagram — você pode atender clientes em qualquer estado sem sair de casa.</div></div>
+    <div class="faq-item"><div class="faq-q">Posso cancelar a mentoria quando quiser?</div><div class="faq-a">Sim. Sem multa, sem fidelidade mínima. Você cancela via WhatsApp e a cobrança para no mês seguinte.</div></div>
+    <div class="faq-item"><div class="faq-q">Como funciona a garantia?</div><div class="faq-a">7 dias corridos. Qualquer motivo. Reembolso em até 5 dias úteis. Sem perguntas, sem burocracia.</div></div>
+    <div class="faq-item"><div class="faq-q">Por que o preço vai subir?</div><div class="faq-a">Não é gatilho falso. O suporte tem limite real de capacidade. <strong>A cada novo lote de compradores, o preço sobe.</strong> Quem entrar primeiro paga menos.</div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="w">
+    <p>Arquiteto de Agentes · Produto digital · Entrega imediata<br>Garantia de 7 dias · Suporte via WhatsApp<br>© 2026 · Todos os direitos reservados</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const K='arq_dl_v3';let dl=null;
+  try{dl=localStorage.getItem(K);}catch(e){}
+  if(!dl){dl=Date.now()+24*60*60*1000;try{localStorage.setItem(K,dl);}catch(e){}}
+  dl=parseInt(dl);
+  function pad(n){return String(n).padStart(2,'0');}
+  function tick(){
+    const d=Math.max(0,dl-Date.now());
+    const h=Math.floor(d/3600000),m=Math.floor((d%3600000)/60000),s=Math.floor((d%60000)/1000);
+    const el=document.getElementById('timer');if(el)el.textContent=pad(h)+':'+pad(m)+':'+pad(s);
+    if(d>0)setTimeout(tick,1000);
+  }
+  tick();
+  let v=14;
+  setInterval(function(){if(v>5&&Math.random()<.25){v--;const el=document.getElementById('vagas');if(el)el.textContent=v;}},55000);
+})();
+</script>
+</body>
+</html>

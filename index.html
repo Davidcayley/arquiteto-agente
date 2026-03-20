@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arquiteto de Agentes — Entre Antes que Todo Mundo Descubra</title>
+<link href="https://fonts.googleapis.com/css2?family=Editorial+New:ital@0;1&family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;700;800&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f2ed;
+  --ink: #0c0c0a;
+  --red: #c8311a;
+  --red-light: #e03a20;
+  --gold: #b8832a;
+  --gold-bg: #fdf6e8;
+  --surface: #edeae3;
+  --border: #d8d3c8;
+  --muted: #7a7568;
+  --white: #fdfcfa;
+  --green: #1a7a4a;
+  --text: #3a3830;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Syne',sans-serif;
+  font-weight:400;
+  overflow-x:hidden;
+}
+
+/* ── NOISE TEXTURE ── */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9999;
+}
+
+/* ── STICKY URGENCY BAR ── */
+.urgency-bar{
+  position:sticky;top:0;z-index:900;
+  background:var(--ink);
+  padding:10px 24px;
+  display:flex;align-items:center;justify-content:center;gap:20px;
+  flex-wrap:wrap;
+}
+.urgency-bar span{
+  font-family:'Courier Prime',monospace;
+  font-size:11px;letter-spacing:0.18em;text-transform:uppercase;
+  color:#f5f2ed;
+}
+.urgency-bar .timer{
+  font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;
+  color:#f5f2ed;background:var(--red);padding:2px 12px;
+}
+.urgency-bar .vagas{color:rgba(245,242,237,0.5);}
+.urgency-bar .vagas strong{color:#f5c518;}
+
+/* ── WRAPPER ── */
+.w{max-width:820px;margin:0 auto;padding:0 28px;}
+.w-wide{max-width:1000px;margin:0 auto;padding:0 28px;}
+
+/* ── SECTION DIVIDERS ── */
+.rule{
+  border:none;border-top:1px solid var(--border);
+  margin:0;
+}
+.rule-bold{border-top:3px solid var(--ink);}
+
+/* ── EDITORIAL HEADER ── */
+.site-header{
+  padding:20px 0;
+  border-bottom:1px solid var(--border);
+}
+.site-header .inner{
+  display:flex;align-items:center;justify-content:space-between;
+}
+.header-tag{
+  font-family:'Courier Prime',monospace;
+  font-size:9px;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--muted);
+}
+.header-logo{
+  font-family:'Instrument Serif',serif;
+  font-size:1rem;font-style:italic;color:var(--ink);
+}
+
+/* ── HERO ── */
+.hero{
+  padding:64px 0 48px;
+  border-bottom:3px solid var(--ink);
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-kicker{
+  font-family:'Courier Prime',monospace;
+  font-size:9px;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--red);margin-bottom:20px;
+  display:flex;align-items:center;gap:10px;
+}
+.hero-kicker::before{content:'';width:24px;height:1px;background:var(--red);}
+
+.hero-h1{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(3rem,7vw,5.8rem);
+  line-height:1.0;
+  letter-spacing:-0.02em;
+  color:var(--ink);
+  margin-bottom:0;
+}
+.hero-h1 em{font-style:italic;color:var(--red);}
+
+.hero-rule{
+  width:100%;height:3px;
+  background:var(--ink);
+  margin:20px 0;
+}
+
+.hero-deck{
+  font-size:clamp(1.05rem,2.5vw,1.35rem);
+  color:var(--text);
+  line-height:1.65;
+  max-width:640px;
+  font-weight:400;
+}
+.hero-deck strong{color:var(--ink);font-weight:700;}
+
+.hero-bottom{
+  display:flex;align-items:flex-end;
+  justify-content:space-between;
+  gap:32px;flex-wrap:wrap;
+  margin-top:36px;
+}
+
+.hero-meta{
+  display:flex;gap:32px;flex-wrap:wrap;
+}
+.hero-stat{display:flex;flex-direction:column;gap:2px;}
+.hero-stat-val{
+  font-family:'Instrument Serif',serif;
+  font-size:1.8rem;font-style:italic;
+  color:var(--ink);line-height:1;
+}
+.hero-stat-label{
+  font-family:'Courier Prime',monospace;
+  font-size:8px;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--muted);
+}
+
+.hero-cta-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+.hero-price{
+  font-family:'Instrument Serif',serif;
+  font-size:2.4rem;color:var(--ink);font-style:italic;
+  text-align:right;line-height:1;
+}
+.hero-price-note{
+  font-family:'Courier Prime',monospace;
+  font-size:8px;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--muted);text-align:right;
+}
+
+/* ── CTA BUTTONS ── */
+.btn-primary{
+  display:inline-block;
+  background:var(--red);color:#fdfcfa;
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:0.9rem;letter-spacing:0.06em;text-transform:uppercase;
+  padding:18px 36px;text-decoration:none;
+  border:none;cursor:pointer;
+  transition:background 0.2s;
+}
+.btn-primary:hover{background:#a82510;}
+
+.btn-ghost{
+  display:inline-block;
+  background:transparent;color:var(--muted);
+  font-family:'Courier Prime',monospace;
+  font-size:9px;letter-spacing:0.2em;text-transform:uppercase;
+  padding:10px 0;text-decoration:none;border:none;cursor:pointer;
+}
+
+.btn-gold{
+  display:inline-block;
+  background:var(--gold);color:var(--white);
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:0.9rem;letter-spacing:0.06em;text-transform:uppercase;
+  padding:18px 36px;text-decoration:none;border:none;cursor:pointer;
+  transition:background 0.2s;
+}
+.btn-gold:hover{background:#9a6c1a;}
+
+/* ── SECTION HEADERS ── */
+.sec{padding:60px 0;}
+.sec-label{
+  font-family:'Courier Prime',monospace;
+  font-size:9px;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:16px;
+  display:flex;align-items:center;gap:12px;
+}
+.sec-label::before{content:'';width:20px;height:1px;background:var(--muted);}
+
+.sec-title{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(1.8rem,4vw,3rem);
+  line-height:1.1;color:var(--ink);
+  margin-bottom:24px;
+}
+.sec-title em{font-style:italic;color:var(--red);}
+
+/* ── BODY TEXT ── */
+.body-p{
+  font-size:1rem;color:var(--text);
+  line-height:1.85;margin-bottom:20px;
+}
+.body-p strong{color:var(--ink);font-weight:700;}
+.body-p em{font-style:italic;color:var(--red);}
+
+/* ── PULL QUOTE ── */
+.pull{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(1.3rem,3vw,2rem);
+  font-style:italic;
+  border-left:4px solid var(--red);
+  padding:4px 0 4px 24px;
+  margin:36px 0;color:var(--ink);
+  line-height:1.35;
+}
+
+/* ── BOLD STATEMENT ── */
+.statement{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(2rem,5vw,4rem);
+  line-height:1;font-style:italic;
+  color:var(--ink);margin:32px 0;
+}
+.statement .accent{color:var(--red);}
+
+/* ── NUMBERED LIST ── */
+.num-list{list-style:none;margin:24px 0;}
+.num-list li{
+  display:flex;gap:20px;align-items:flex-start;
+  padding:16px 0;border-bottom:1px solid var(--border);
+}
+.num-list li:last-child{border-bottom:none;}
+.num-list .n{
+  font-family:'Instrument Serif',serif;
+  font-size:2rem;font-style:italic;color:var(--border);
+  line-height:1;flex-shrink:0;width:36px;
+}
+.num-list .t h4{font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.num-list .t p{font-size:0.83rem;color:var(--muted);line-height:1.6;}
+.num-list .t p strong{color:var(--text);}
+
+/* ── TABLE ── */
+.data-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:0.84rem;}
+.data-table th{
+  background:var(--ink);color:var(--bg);
+  font-family:'Courier Prime',monospace;
+  font-size:8px;letter-spacing:0.2em;text-transform:uppercase;
+  padding:10px 14px;text-align:left;font-weight:400;
+}
+.data-table td{
+  padding:12px 14px;border-bottom:1px solid var(--border);
+  color:var(--text);vertical-align:top;
+}
+.data-table td:first-child{color:var(--ink);font-weight:600;}
+.data-table .green{color:var(--green);font-weight:700;font-family:'Courier Prime',monospace;}
+.data-table tr:hover td{background:rgba(0,0,0,0.015);}
+.data-table tr:last-child td{border-bottom:none;}
+
+/* ── CALLOUT ── */
+.callout{
+  padding:22px 26px;margin:28px 0;
+  border:1px solid var(--border);
+  background:var(--surface);
+}
+.callout.red{border-color:var(--red);background:rgba(200,49,26,0.04);}
+.callout.gold{border-color:var(--gold);background:var(--gold-bg);}
+.callout.green{border-color:var(--green);background:rgba(26,122,74,0.04);}
+.callout-label{
+  font-family:'Courier Prime',monospace;
+  font-size:8px;letter-spacing:0.25em;text-transform:uppercase;
+  margin-bottom:10px;display:flex;align-items:center;gap:8px;
+}
+.callout.red .callout-label{color:var(--red);}
+.callout.gold .callout-label{color:var(--gold);}
+.callout.green .callout-label{color:var(--green);}
+.callout p{font-size:0.88rem;color:var(--text);line-height:1.7;}
+.callout p strong{color:var(--ink);}
+
+/* ── FOR WHO ── */
+.fit-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);margin:28px 0;
+}
+.fit-col{background:var(--white);}
+.fit-head{
+  padding:12px 20px;border-bottom:1px solid var(--border);
+  font-family:'Courier Prime',monospace;
+  font-size:8px;letter-spacing:0.22em;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+}
+.fit-head.yes{color:var(--green);background:rgba(26,122,74,0.04);}
+.fit-head.no{color:var(--red);background:rgba(200,49,26,0.04);}
+.fit-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.fit-dot.yes{background:var(--green);}
+.fit-dot.no{background:var(--red);}
+.fit-item{
+  padding:12px 20px;border-bottom:1px solid var(--border);
+  font-size:0.83rem;color:var(--text);line-height:1.5;
+  display:flex;gap:10px;align-items:flex-start;
+}
+.fit-item:last-child{border-bottom:none;}
+.fit-col.yes .fit-item::before{content:'✓';color:var(--green);flex-shrink:0;font-weight:700;margin-top:1px;}
+.fit-col.no .fit-item::before{content:'✕';color:var(--red);flex-shrink:0;font-weight:700;margin-top:1px;}
+.fit-item strong{color:var(--ink);}
+
+/* ── DELIVERABLES ── */
+.del-list{margin:24px 0;}
+.del-item{
+  display:flex;gap:18px;align-items:flex-start;
+  padding:18px 0;border-bottom:1px solid var(--border);
+}
+.del-item:last-child{border-bottom:none;}
+.del-n{
+  font-family:'Instrument Serif',serif;
+  font-size:1.5rem;font-style:italic;
+  color:var(--red);line-height:1;width:28px;flex-shrink:0;
+}
+.del-body h4{font-size:0.9rem;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.del-body p{font-size:0.8rem;color:var(--muted);line-height:1.55;}
+
+/* ── TESTIMONIALS ── */
+.testi-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);margin:28px 0;
+}
+.testi{background:var(--white);padding:22px;}
+.testi-q{
+  font-family:'Instrument Serif',serif;
+  font-size:0.95rem;font-style:italic;
+  color:var(--text);line-height:1.65;margin-bottom:14px;
+}
+.testi-q::before{content:'\201C';color:var(--red);font-size:1.4rem;line-height:0;vertical-align:-0.3em;margin-right:3px;}
+.testi-author{
+  font-family:'Courier Prime',monospace;
+  font-size:8px;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--muted);
+}
+.testi-author strong{color:var(--gold);}
+
+/* ══════════════════════════════════════
+   OFFER BOXES
+══════════════════════════════════════ */
+
+/* Main offer */
+.offer-main{
+  background:var(--ink);
+  padding:48px;margin:0 0 2px;
+  position:relative;overflow:hidden;
+}
+.offer-main::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--red);
+}
+.offer-eyebrow{
+  font-family:'Courier Prime',monospace;
+  font-size:9px;letter-spacing:0.3em;text-transform:uppercase;
+  color:rgba(245,242,237,0.4);margin-bottom:16px;
+}
+.offer-name{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(1.8rem,4vw,3rem);
+  font-style:italic;color:var(--bg);
+  line-height:1.1;margin-bottom:16px;
+}
+.offer-tagline{
+  font-size:0.95rem;color:rgba(245,242,237,0.65);
+  line-height:1.7;max-width:560px;margin-bottom:28px;
+}
+.offer-tagline strong{color:var(--bg);}
+.price-row{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:28px;}
+.price-old{
+  font-family:'Instrument Serif',serif;
+  font-size:1.8rem;font-style:italic;
+  color:rgba(245,242,237,0.25);text-decoration:line-through;
+}
+.price-new{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(3rem,7vw,5rem);font-style:italic;
+  color:var(--bg);line-height:1;
+}
+.price-note{
+  font-family:'Courier Prime',monospace;
+  font-size:9px;letter-spacing:0.15em;text-transform:uppercase;
+  color:rgba(245,242,237,0.4);line-height:1.8;padding-bottom:6px;
+}
+.offer-includes{
+  border-top:1px solid rgba(245,242,237,0.1);
+  padding-top:24px;
+  display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;
+}
+.inc-item{
+  font-size:0.82rem;color:rgba(245,242,237,0.6);
+  display:flex;gap:8px;align-items:flex-start;line-height:1.4;
+}
+.inc-item::before{content:'✓';color:var(--red);flex-shrink:0;font-weight:700;}
+
+/* UPSELL 1 — Fluxos JSON */
+.upsell-1{
+  background:var(--ink);
+  border-top:1px solid rgba(245,242,237,0.08);
+  padding:36px 48px;margin-bottom:2px;
+  position:relative;overflow:hidden;
+}
+.upsell-1::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.upsell-badge{
+  display:inline-block;
+  background:var(--gold);color:var(--ink);
+  font-family:'Courier Prime',monospace;
+  font-size:8px;letter-spacing:0.2em;text-transform:uppercase;
+  padding:4px 12px;font-weight:700;margin-bottom:14px;
+}
+.upsell-name{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(1.4rem,3vw,2rem);
+  font-style:italic;color:var(--bg);
+  line-height:1.1;margin-bottom:12px;
+}
+.upsell-tagline{
+  font-size:0.88rem;color:rgba(245,242,237,0.6);
+  line-height:1.7;max-width:560px;margin-bottom:20px;
+}
+.upsell-tagline strong{color:var(--bg);}
+.upsell-price-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:20px;}
+.upsell-price{
+  font-family:'Instrument Serif',serif;
+  font-size:2.6rem;font-style:italic;color:#e8b050;line-height:1;
+}
+.upsell-price-note{
+  font-family:'Courier Prime',monospace;
+  font-size:9px;letter-spacing:0.12em;text-transform:uppercase;
+  color:rgba(245,242,237,0.35);line-height:1.7;
+}
+.upsell-modules{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:rgba(245,242,237,0.06);
+  border:1px solid rgba(245,242,237,0.08);
+  margin-bottom:24px;
+}
+.upsell-mod{
+  background:#111110;padding:16px 18px;
+}
+.upsell-mod h5{font-size:0.82rem;font-weight:700;color:var(--bg);margin-bottom:4px;}
+.upsell-mod p{font-size:0.76rem;color:rgba(245,242,237,0.4);line-height:1.5;}
+.upsell-mod .tag{
+  display:inline-block;
+  font-family:'Courier Prime',monospace;
+  font-size:7px;letter-spacing:0.15em;text-transform:uppercase;
+  border:1px solid var(--gold);color:var(--gold);
+  padding:2px 7px;margin-top:6px;
+}
+
+/* UPSELL 2 — Mentoria */
+.upsell-2{
+  background:var(--ink);
+  border-top:1px solid rgba(245,242,237,0.08);
+  padding:36px 48px;
+  position:relative;overflow:hidden;
+}
+.upsell-2::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(200,49,26,0.7),transparent);
+}
+.upsell-2 .upsell-badge{background:var(--red);}
+.upsell-2 .upsell-price{color:#f0ede8;}
+.upsell-2-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:rgba(245,242,237,0.06);
+  border:1px solid rgba(245,242,237,0.08);
+  margin-bottom:24px;
+}
+.u2-item{background:#111110;padding:16px 18px;}
+.u2-item h5{font-size:0.82rem;font-weight:700;color:var(--bg);margin-bottom:4px;}
+.u2-item p{font-size:0.76rem;color:rgba(245,242,237,0.4);line-height:1.5;}
+
+/* CONDITION BOX */
+.condition-box{
+  background:rgba(245,242,237,0.04);
+  border:1px solid rgba(245,242,237,0.1);
+  padding:18px 22px;margin-bottom:20px;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.condition-icon{
+  font-family:'Instrument Serif',serif;
+  font-size:1.6rem;font-style:italic;color:rgba(245,242,237,0.2);
+  flex-shrink:0;line-height:1;
+}
+.condition-box p{font-size:0.83rem;color:rgba(245,242,237,0.5);line-height:1.65;}
+.condition-box p strong{color:rgba(245,242,237,0.85);}
+
+/* OFFER CTA AREA */
+.cta-area{
+  display:flex;flex-direction:column;gap:8px;
+  margin-top:4px;
+}
+.cta-note{
+  font-family:'Courier Prime',monospace;
+  font-size:9px;letter-spacing:0.15em;text-transform:uppercase;
+  color:rgba(245,242,237,0.3);padding-left:4px;
+}
+
+/* ── GUARANTEE ── */
+.guarantee{
+  border:1px solid var(--border);
+  padding:24px 28px;
+  display:flex;gap:20px;align-items:flex-start;
+  background:var(--white);margin:28px 0;
+}
+.guarantee-num{
+  font-family:'Instrument Serif',serif;
+  font-size:3rem;font-style:italic;color:var(--gold);
+  line-height:1;flex-shrink:0;
+}
+.guarantee h4{font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.guarantee p{font-size:0.82rem;color:var(--muted);line-height:1.6;}
+
+/* ── URGENCY FINAL ── */
+.urgency-section{
+  background:var(--ink);
+  padding:48px;margin:0;
+}
+.urgency-section .sec-label{color:rgba(245,242,237,0.3);}
+.urgency-section .sec-label::before{background:rgba(245,242,237,0.3);}
+.urgency-section .sec-title{color:var(--bg);}
+.urgency-section .sec-title em{color:var(--red);}
+.urgency-section .body-p{color:rgba(245,242,237,0.6);}
+.urgency-section .body-p strong{color:var(--bg);}
+.urgency-section .pull{border-left-color:rgba(245,242,237,0.2);color:rgba(245,242,237,0.85);}
+
+/* ── FAQ ── */
+.faq-item{border-bottom:1px solid var(--border);padding:18px 0;}
+.faq-item:first-child{border-top:1px solid var(--border);}
+.faq-q{font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.faq-a{font-size:0.83rem;color:var(--muted);line-height:1.7;}
+.faq-a strong{color:var(--text);}
+
+/* ── FOOTER ── */
+footer{
+  padding:32px 0;border-top:1px solid var(--border);
+  text-align:center;
+}
+footer p{
+  font-family:'Courier Prime',monospace;
+  font-size:9px;letter-spacing:0.15em;
+  color:var(--muted);text-transform:uppercase;line-height:2;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:680px){
+  .offer-main,.upsell-1,.upsell-2{padding:28px 24px;}
+  .fit-grid,.testi-grid,.upsell-modules,.upsell-2-grid{grid-template-columns:1fr;}
+  .offer-includes{grid-template-columns:1fr;}
+  .hero-bottom{flex-direction:column;align-items:flex-start;}
+  .hero-cta-wrap{align-items:flex-start;}
+  .hero-price{text-align:left;}
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.hero{animation:fadeUp 0.6s ease both;}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     URGENCY BAR
+════════════════════════════════════════ -->
+<div class="urgency-bar">
+  <span>⬛ Este preço fecha em:</span>
+  <span class="timer" id="timer">23:59:59</span>
+  <span class="vagas">— vagas abertas: <strong id="vagas">14</strong></span>
+</div>
+
+<!-- ════════════════════════════════════════
+     HEADER
+════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="w">
+    <div class="inner">
+      <span class="header-tag">Produto digital · Acesso imediato · 2026</span>
+      <span class="header-logo">Arquiteto de Agentes</span>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section class="hero">
+  <div class="w">
+    <div class="hero-kicker">Acesso restrito · Edição de lançamento</div>
+    <h1 class="hero-h1">
+      Empresas estão pagando<br>
+      R$3.000 a R$15.000<br>
+      por isso. <em>Ninguém<br>
+      está te ensinando.</em>
+    </h1>
+    <div class="hero-rule"></div>
+    <p class="hero-deck">
+      Agentes de IA para pequenos negócios é o mercado mais subexplorado do Brasil em 2026.
+      <strong>Você não precisa saber programar. Precisa saber o que montar, para quem vender e quanto cobrar.</strong>
+      Isso é o que este material entrega — com precisão cirúrgica.
+    </p>
+    <div class="hero-bottom">
+      <div class="hero-meta">
+        <div class="hero-stat"><span class="hero-stat-val">6</span><span class="hero-stat-label">Nichos mapeados</span></div>
+        <div class="hero-stat"><span class="hero-stat-val">8</span><span class="hero-stat-label">Ferramentas grátis</span></div>
+        <div class="hero-stat"><span class="hero-stat-val">R$0</span><span class="hero-stat-label">Custo inicial</span></div>
+        <div class="hero-stat"><span class="hero-stat-val">30</span><span class="hero-stat-label">Dias pro 1º cliente</span></div>
+      </div>
+      <div class="hero-cta-wrap">
+        <div class="hero-price">R$97</div>
+        <div class="hero-price-note">Pagamento único · Acesso vitalício</div>
+        <a href="#oferta" class="btn-primary" style="margin-top:10px;">Ver a oferta completa ↓</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     O PROBLEMA
+════════════════════════════════════════ -->
+<section class="sec" style="border-bottom:1px solid var(--border);">
+  <div class="w">
+    <div class="sec-label">// O que está acontecendo no mercado</div>
+
+    <div class="statement">
+      Você já ouviu falar em IA.<br>
+      Você já usou o ChatGPT.<br>
+      Já fez fotinha do Gemini.<br>
+      <span class="accent">Mas ninguém te conta<br>como fazer dinheiro<br>de verdade com IA.</span>
+    </div>
+
+    <p class="body-p">O dinheiro não está em criar conteúdo com IA. Não está em usar o ChatGPT para escrever e-mail. Está em construir <strong>estruturas de IA que trabalham por empresas inteiras enquanto o dono dorme</strong> — e cobrar por isso mensalmente, como serviço recorrente.</p>
+
+    <p class="body-p">Isso tem nome: <strong>agente de IA</strong>. E o mercado brasileiro está no ponto de inflexão perfeito: a tecnologia ficou acessível, as ferramentas ficaram gratuitas, e as empresas estão com dor real — mas <em>ainda não sabem quem contratar.</em></p>
+
+    <div class="pull">
+      Grandes corporações já adotaram.<br>
+      As PMEs estão chegando agora — sem saber o que precisam,<br>
+      sem saber quanto pagar, sem saber quem procurar.<br>
+      <em>Você chega como o único que sabe.</em>
+    </div>
+
+    <div class="callout red">
+      <div class="callout-label">▸ A janela que está aberta agora</div>
+      <p>Em 2005, quem aprendeu a fazer site em HTML ficou rico. Em 2012, quem entrou no Facebook Ads antes de todo mundo virou referência. Em 2018, quem cresceu no Instagram orgânico construiu audiências milionárias. <strong>Agentes de IA para PMEs é 2026.</strong> Quem entrar agora pega o mercado. Quem esperar vai disputar preço com cinquenta pessoas fazendo a mesma coisa.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     MECANISMO ÚNICO — EFEITO INTÉRPRETE
+════════════════════════════════════════ -->
+<section style="background:var(--ink);padding:72px 0;">
+  <div class="w">
+
+    <div style="font-family:'Courier Prime',monospace;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(245,242,237,0.35);margin-bottom:20px;display:flex;align-items:center;gap:12px;">
+      <span style="width:20px;height:1px;background:rgba(245,242,237,0.35);display:inline-block;flex-shrink:0;"></span>
+      // O mecanismo único
+    </div>
+
+    <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(2rem,5vw,3.8rem);font-style:italic;color:var(--bg);line-height:1.05;margin-bottom:28px;">
+      Por que qualquer pessoa<br>consegue fazer isso —<br><span style="color:var(--red);">O Efeito Intérprete.</span>
+    </h2>
+
+    <p style="font-size:1.05rem;color:rgba(245,242,237,0.65);line-height:1.8;max-width:620px;margin-bottom:32px;font-weight:400;">
+      A pergunta silenciosa que todo mundo tem ao ver essa oportunidade é: <strong style="color:var(--bg);">"Ok, mas por que eu conseguiria fazer isso?"</strong> A resposta está no mecanismo que faz tudo funcionar — e ele não tem nada a ver com tecnologia.
+    </p>
+
+    <!-- COMPARISON BLOCK -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(245,242,237,0.06);border:1px solid rgba(245,242,237,0.08);margin-bottom:36px;">
+      <div style="background:#111110;padding:28px;">
+        <div style="font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,242,237,0.3);margin-bottom:14px;">// O que todo mundo pensa que precisa</div>
+        <ul style="list-style:none;">
+          <li style="font-size:0.88rem;color:rgba(245,242,237,0.35);padding:8px 0;border-bottom:1px solid rgba(245,242,237,0.05);display:flex;gap:10px;align-items:center;"><span style="color:rgba(200,49,26,0.6);flex-shrink:0;">✕</span> Saber programar em Python</li>
+          <li style="font-size:0.88rem;color:rgba(245,242,237,0.35);padding:8px 0;border-bottom:1px solid rgba(245,242,237,0.05);display:flex;gap:10px;align-items:center;"><span style="color:rgba(200,49,26,0.6);flex-shrink:0;">✕</span> Entender de machine learning</li>
+          <li style="font-size:0.88rem;color:rgba(245,242,237,0.35);padding:8px 0;border-bottom:1px solid rgba(245,242,237,0.05);display:flex;gap:10px;align-items:center;"><span style="color:rgba(200,49,26,0.6);flex-shrink:0;">✕</span> Ter formação em tecnologia</li>
+          <li style="font-size:0.88rem;color:rgba(245,242,237,0.35);padding:8px 0;border-bottom:1px solid rgba(245,242,237,0.05);display:flex;gap:10px;align-items:center;"><span style="color:rgba(200,49,26,0.6);flex-shrink:0;">✕</span> Construir modelos de IA do zero</li>
+          <li style="font-size:0.88rem;color:rgba(245,242,237,0.35);padding:8px 0;display:flex;gap:10px;align-items:center;"><span style="color:rgba(200,49,26,0.6);flex-shrink:0;">✕</span> Anos de experiência técnica</li>
+        </ul>
+      </div>
+      <div style="background:#0e0e0c;padding:28px;border-left:2px solid var(--red);">
+        <div style="font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:14px;">// O que realmente importa</div>
+        <ul style="list-style:none;">
+          <li style="font-size:0.88rem;color:rgba(245,242,237,0.8);padding:8px 0;border-bottom:1px solid rgba(245,242,237,0.05);display:flex;gap:10px;align-items:center;"><span style="color:#2db87a;flex-shrink:0;">✓</span> Saber ler o problema do negócio</li>
+          <li style="font-size:0.88rem;color:rgba(245,242,237,0.8);padding:8px 0;border-bottom:1px solid rgba(245,242,237,0.05);display:flex;gap:10px;align-items:center;"><span style="color:#2db87a;flex-shrink:0;">✓</span> Traduzir a dor em solução técnica</li>
+          <li style="font-size:0.88rem;color:rgba(245,242,237,0.8);padding:8px 0;border-bottom:1px solid rgba(245,242,237,0.05);display:flex;gap:10px;align-items:center;"><span style="color:#2db87a;flex-shrink:0;">✓</span> Conectar ferramentas que já existem</li>
+          <li style="font-size:0.88rem;color:rgba(245,242,237,0.8);padding:8px 0;border-bottom:1px solid rgba(245,242,237,0.05);display:flex;gap:10px;align-items:center;"><span style="color:#2db87a;flex-shrink:0;">✓</span> Apresentar o valor na linguagem do cliente</li>
+          <li style="font-size:0.88rem;color:rgba(245,242,237,0.8);padding:8px 0;display:flex;gap:10px;align-items:center;"><span style="color:#2db87a;flex-shrink:0;">✓</span> Ser o único na sala que sabe o que existe</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- MECHANISM EXPLANATION -->
+    <div style="border-left:3px solid var(--red);padding:2px 0 2px 28px;margin-bottom:36px;">
+      <p style="font-family:'Instrument Serif',serif;font-size:clamp(1.2rem,2.8vw,1.7rem);font-style:italic;color:var(--bg);line-height:1.4;margin-bottom:16px;">
+        "O desenvolvedor constrói a faca.<br>O Arquiteto sabe qual faca usar,<br>quando usar — e cobra por isso."
+      </p>
+      <p style="font-size:0.92rem;color:rgba(245,242,237,0.55);line-height:1.75;max-width:580px;">
+        O GPT-4o já existe. O n8n já existe. A Z-API já existe. O Google Sheets já existe. <strong style="color:rgba(245,242,237,0.85);">O que não existe é a pessoa que sabe combinar essas peças para resolver o problema específico de uma clínica estética em Fortaleza.</strong> Essa pessoa é você — depois deste material.
+      </p>
+    </div>
+
+    <!-- 3 PILLARS -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(245,242,237,0.06);border:1px solid rgba(245,242,237,0.08);">
+      <div style="background:#111110;padding:24px 22px;">
+        <div style="font-family:'Instrument Serif',serif;font-size:2rem;font-style:italic;color:var(--red);line-height:1;margin-bottom:10px;">01</div>
+        <div style="font-size:0.88rem;font-weight:700;color:var(--bg);margin-bottom:6px;">Lê o negócio</div>
+        <div style="font-size:0.78rem;color:rgba(245,242,237,0.4);line-height:1.6;">Entra em uma conversa com o empresário e identifica onde está a dor que custa dinheiro — não a dor que ele descreve, a real.</div>
+      </div>
+      <div style="background:#111110;padding:24px 22px;border-left:1px solid rgba(245,242,237,0.06);">
+        <div style="font-family:'Instrument Serif',serif;font-size:2rem;font-style:italic;color:var(--red);line-height:1;margin-bottom:10px;">02</div>
+        <div style="font-size:0.88rem;font-weight:700;color:var(--bg);margin-bottom:6px;">Arquiteta a solução</div>
+        <div style="font-size:0.78rem;color:rgba(245,242,237,0.4);line-height:1.6;">Combina as ferramentas certas para o problema certo — sem programar, sem construir do zero, sem depender de ninguém.</div>
+      </div>
+      <div style="background:#111110;padding:24px 22px;border-left:1px solid rgba(245,242,237,0.06);">
+        <div style="font-family:'Instrument Serif',serif;font-size:2rem;font-style:italic;color:var(--red);line-height:1;margin-bottom:10px;">03</div>
+        <div style="font-size:0.88rem;font-weight:700;color:var(--bg);margin-bottom:6px;">Vende o resultado</div>
+        <div style="font-size:0.78rem;color:rgba(245,242,237,0.4);line-height:1.6;">Nunca vende "agente de IA". Vende "a recepcionista que nunca dorme" — e o empresário abre a carteira sem questionar o preço.</div>
+      </div>
+    </div>
+
+    <!-- BOTTOM NOTE -->
+    <p style="font-size:0.82rem;color:rgba(245,242,237,0.3);line-height:1.65;margin-top:24px;font-style:italic;border-top:1px solid rgba(245,242,237,0.06);padding-top:20px;">
+      O Efeito Intérprete é o motivo pelo qual você não precisa de formação técnica para cobrar mais do que a maioria dos desenvolvedores — porque o valor não está na construção, está na tradução. E tradução é uma habilidade que qualquer pessoa com boa leitura de negócio pode desenvolver em semanas.
+    </p>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     O MERCADO
+════════════════════════════════════════ -->
+<section class="sec" style="border-bottom:1px solid var(--border);">
+  <div class="w">
+    <div class="sec-label">// Quem está comprando e quanto paga</div>
+    <h2 class="sec-title">O mercado que ninguém<br>está te mostrando</h2>
+
+    <p class="body-p">Estes são os nichos comprando estruturas de automação com IA no Brasil agora — com os tickets que o mercado já pratica:</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Nicho</th><th>Dor principal</th><th>Ticket mensal</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Clínicas estéticas</td><td>Agendamentos perdidos fora do horário</td><td class="green">R$800–R$1.800</td></tr>
+        <tr><td>Imobiliárias</td><td>Leads que somem sem resposta em 5 min</td><td class="green">R$1.200–R$3.000</td></tr>
+        <tr><td>Clínicas odontológicas</td><td>No-show e recall manual ineficiente</td><td class="green">R$600–R$1.400</td></tr>
+        <tr><td>Escritórios de advocacia</td><td>Triagem de casos e agendamento</td><td class="green">R$900–R$2.500</td></tr>
+        <tr><td>Academias e estúdios</td><td>Churn silencioso — aluno some</td><td class="green">R$500–R$1.200</td></tr>
+        <tr><td>E-commerce</td><td>Abandono de carrinho e SAC sobrecarregado</td><td class="green">R$1.500–R$4.000</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout gold">
+      <div class="callout-label">▸ O cálculo que você precisa fazer agora</div>
+      <p>Um cliente recorrente de R$1.000/mês. A estrutura leva 10–15 horas para montar. Custo de ferramentas: R$100–R$130/mês. <strong>Seu lucro líquido: ~R$870/mês por cliente.</strong> Três clientes: R$2.610/mês recorrentes. Cinco clientes: R$4.350/mês. Sem CLT, sem horário fixo, sem chefe.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     PARA QUEM É
+════════════════════════════════════════ -->
+<section class="sec" style="border-bottom:1px solid var(--border);">
+  <div class="w">
+    <div class="sec-label">// Leia antes de comprar</div>
+    <h2 class="sec-title">Seja <em>honesto</em><br>com você mesmo.</h2>
+
+    <p class="body-p">Não quero o seu dinheiro se isso não é para você. Leia cada linha abaixo com atenção.</p>
+
+    <div class="fit-grid">
+      <div class="fit-col yes">
+        <div class="fit-head yes"><div class="fit-dot yes"></div>// É pra você se...</div>
+        <div class="fit-item"><strong>Você quer renda recorrente real</strong> — não passiva de mentira. Uma renda construída com esforço no primeiro mês e que se torna previsível depois.</div>
+        <div class="fit-item"><strong>Você está disposto a aprender ferramentas novas</strong> do zero. Sem programação — mas com dedicação de seguir um passo a passo.</div>
+        <div class="fit-item"><strong>Você tem 1–2 horas por dia</strong> nas primeiras semanas. Sem esse tempo, nenhum produto do mundo vai funcionar.</div>
+        <div class="fit-item"><strong>Você prefere vender para empresas</strong> (B2B) — ticket maior, menos volume, mais estabilidade e menos drama.</div>
+        <div class="fit-item"><strong>Você age antes de estar 100% pronto.</strong> Quem espera dominar tudo antes de prospectar nunca fecha o primeiro cliente.</div>
+        <div class="fit-item"><strong>Você quer entrar cedo</strong> — a vantagem aqui é temporal e você entende que ela não dura para sempre.</div>
+      </div>
+      <div class="fit-col no">
+        <div class="fit-head no"><div class="fit-dot no"></div>// Não é pra você se...</div>
+        <div class="fit-item"><strong>Você quer renda passiva imediata.</strong> Isso não existe. O que existe é renda recorrente construída com trabalho real.</div>
+        <div class="fit-item"><strong>Você não tem paciência com ferramentas novas.</strong> O material explica tudo do zero — mas você precisa abrir, testar e errar sem desistir.</div>
+        <div class="fit-item"><strong>Você quer resultado na primeira semana.</strong> O ciclo de prospecção → reunião → fechamento leva tempo. Quem espera rápido vai se frustrar.</div>
+        <div class="fit-item"><strong>Sua agenda já está cheia.</strong> Sem margem para executar, nenhum conhecimento funciona. Organize sua rotina antes de qualquer compra.</div>
+        <div class="fit-item"><strong>Você quer que alguém faça por você.</strong> O material te ensina a construir — não constrói por você.</div>
+        <div class="fit-item"><strong>Você já desistiu de três projetos</strong> antes dos 60 dias. O problema não é o produto — é o padrão. Resolva isso primeiro.</div>
+      </div>
+    </div>
+    <p class="body-p" style="font-size:0.85rem;color:var(--muted);font-style:italic;">Se você se viu mais na esquerda — você está no lugar certo. Se foi o contrário, guarda o link e volta quando a situação mudar.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     DEPOIMENTOS
+════════════════════════════════════════ -->
+<section class="sec" style="border-bottom:1px solid var(--border);">
+  <div class="w">
+    <div class="sec-label">// Quem já está no mercado</div>
+    <h2 class="sec-title">Resultados de quem<br><em>executou de verdade.</em></h2>
+
+    <div class="testi-grid">
+      <div class="testi">
+        <p class="testi-q">Montei meu primeiro agente para uma clínica em Fortaleza em 3 dias. Eles pagam R$900 por mês. Nunca tinha tocado em automação antes.</p>
+        <div class="testi-author"><strong>Camila R.</strong> · Fortaleza, CE</div>
+      </div>
+      <div class="testi">
+        <p class="testi-q">Já tentei vender curso, já tentei social media. Isso é diferente — o cliente entende que precisa e paga sem questionar o preço.</p>
+        <div class="testi-author"><strong>Fernanda M.</strong> · São Paulo, SP</div>
+      </div>
+      <div class="testi">
+        <p class="testi-q">Assustei quando vi o ticket que as pessoas cobram. Pensei que era mentira. Não é. Em 6 semanas fechei dois clientes recorrentes.</p>
+        <div class="testi-author"><strong>Juliana T.</strong> · Belo Horizonte, MG</div>
+      </div>
+      <div class="testi">
+        <p class="testi-q">O script de prospecção sozinho vale 10x o que paguei. Mandei para 12 contatos, 3 responderam querendo apresentação.</p>
+        <div class="testi-author"><strong>Beatriz C.</strong> · Recife, PE</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     OFERTA COMPLETA
+════════════════════════════════════════ -->
+<section id="oferta" style="padding:60px 0 0;">
+  <div class="w">
+    <div class="sec-label">// A oferta</div>
+    <h2 class="sec-title">Tudo que você recebe<br><em>agora.</em></h2>
+    <p class="body-p">Três camadas de produto. Você escolhe até onde quer ir.</p>
+  </div>
+
+  <!-- ── PRODUTO BASE ── -->
+  <div class="w" style="margin-bottom:2px;">
+    <div class="offer-main">
+      <div class="offer-eyebrow">// Produto principal · Nível 01</div>
+      <div class="offer-name">E-book Arquiteto de Agentes<br>— Acesso Completo</div>
+      <div class="offer-tagline">O mapa completo do mercado de agentes de IA para PMEs: como funciona, quais ferramentas usar, quais nichos abordar, como precificar e como fechar o primeiro cliente. <strong>Sem programação. Sem enrolação.</strong></div>
+
+      <div class="price-row">
+        <div class="price-old">R$297</div>
+        <div class="price-new">R$97</div>
+        <div class="price-note">PAGAMENTO ÚNICO<br>SEM ASSINATURA<br>ACESSO VITALÍCIO</div>
+      </div>
+
+      <div class="offer-includes">
+        <div class="inc-item">E-book completo — 40 páginas</div>
+        <div class="inc-item">Mapa de 6 nichos pagantes</div>
+        <div class="inc-item">Script de prospecção WhatsApp</div>
+        <div class="inc-item">Planilha de precificação</div>
+        <div class="inc-item">Lista das 8 ferramentas grátis</div>
+        <div class="inc-item">Roteiro de reunião de venda</div>
+        <div class="inc-item">System prompt modelo pronto</div>
+        <div class="inc-item">Garantia de 7 dias</div>
+      </div>
+
+      <div class="cta-area" style="margin-top:28px;">
+        <a href="#" class="btn-primary" style="align-self:flex-start;">Quero o E-book — R$97 →</a>
+        <span class="cta-note">Pix, cartão ou boleto · Acesso em menos de 2 minutos</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── UPSELL 1 — FLUXOS JSON ── -->
+  <div class="w" style="margin-bottom:2px;">
+    <div class="upsell-1">
+      <div class="upsell-badge">// Upgrade Nível 02 — disponível após a compra</div>
+      <div class="upsell-name">Kit Fluxos Prontos<br>— Cole, Configure, Entregue.</div>
+      <div class="upsell-tagline">
+        Você leu o e-book e sabe o que fazer. Agora imagine não precisar construir o fluxo do zero — só <strong>copiar o JSON, colar no n8n, e configurar os dados do cliente.</strong> É exatamente isso que este kit entrega.
+      </div>
+
+      <div class="upsell-price-row">
+        <div class="upsell-price">R$47</div>
+        <div class="upsell-price-note">PAGAMENTO ÚNICO<br>ACESSO IMEDIATO<br>ATUALIZADO A CADA NOVO NICHO</div>
+      </div>
+
+      <div class="upsell-modules">
+        <div class="upsell-mod">
+          <h5>Fluxo 01 — Atendimento WhatsApp (Clínica)</h5>
+          <p>JSON completo do agente de atendimento 24h para clínicas estéticas. Inclui memória, filtros, prompt e envio de resposta.</p>
+          <span class="tag">Pronto para usar</span>
+        </div>
+        <div class="upsell-mod">
+          <h5>Fluxo 02 — Agendamento + Google Calendar</h5>
+          <p>Agente que verifica agenda, agenda consulta e envia confirmação automática. Integrado ao Google Calendar do cliente.</p>
+          <span class="tag">Pronto para usar</span>
+        </div>
+        <div class="upsell-mod">
+          <h5>Fluxo 03 — Qualificação de Leads (Imobiliária)</h5>
+          <p>Agente que recebe lead do portal, qualifica com 5 perguntas, pontua e notifica o corretor apenas dos leads quentes.</p>
+          <span class="tag">Pronto para usar</span>
+        </div>
+        <div class="upsell-mod">
+          <h5>Fluxo 04 — Recall de Pacientes (Odontologia)</h5>
+          <p>Sequência automática de reativação: identifica pacientes que não retornam há mais de 60 dias e dispara mensagens escalonadas.</p>
+          <span class="tag">Pronto para usar</span>
+        </div>
+        <div class="upsell-mod">
+          <h5>Fluxo 05 — SAC + Pós-venda (E-commerce)</h5>
+          <p>Agente de atendimento pós-venda: rastreio, trocas, dúvidas e escalonamento para humano. Integrado com Shopify e WooCommerce.</p>
+          <span class="tag">Pronto para usar</span>
+        </div>
+        <div class="upsell-mod">
+          <h5>+ Novos fluxos toda vez que lançar nicho novo</h5>
+          <p>Compradores do Kit recebem automaticamente cada novo fluxo que for adicionado — sem pagar nada a mais.</p>
+          <span class="tag">Acesso vitalício</span>
+        </div>
+      </div>
+
+      <div class="condition-box">
+        <div class="condition-icon">↯</div>
+        <p>Com o Kit, você reduz o tempo de implementação de <strong>8–15 horas para 2–4 horas</strong> por cliente. Você ainda precisa configurar os dados do cliente (número Z-API, nome do agente, informações da empresa) — mas o esqueleto do fluxo já está pronto. <strong>É a diferença entre construir uma casa do zero e montar uma casa pré-fabricada.</strong></p>
+      </div>
+
+      <div class="cta-area">
+        <a href="#" class="btn-gold" style="align-self:flex-start;">Quero o E-book + Kit Fluxos — R$144 →</a>
+        <a href="#" class="btn-ghost">Não, prefiro só o e-book por enquanto</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── UPSELL 2 — MENTORIA ── -->
+  <div class="w" style="margin-bottom:60px;">
+    <div class="upsell-2">
+      <div class="upsell-badge">// Upgrade Nível 03 — o nível mais alto</div>
+      <div class="upsell-name">Mentoria Arquiteto de Agentes<br>— Até Fechar o Primeiro Cliente.</div>
+      <div class="upsell-tagline">
+        Você tem o mapa. Você tem os fluxos prontos. Agora quer ter alguém do seu lado enquanto executa — <strong>vídeos passo a passo com a tela real, sessões ao vivo, suporte direto, e acompanhamento até você fechar o primeiro contrato.</strong>
+      </div>
+
+      <div class="upsell-price-row">
+        <div class="upsell-price">R$297<span style="font-size:1.2rem;color:rgba(245,242,237,0.4)">/mês</span></div>
+        <div class="upsell-price-note">SEM FIDELIDADE MÍNIMA<br>CANCELE QUANDO QUISER<br>FIQUE ATÉ TER RESULTADO</div>
+      </div>
+
+      <div class="upsell-2-grid">
+        <div class="u2-item">
+          <h5>Aulas em vídeo com tela real</h5>
+          <p>Cada fase do e-book tem um vídeo correspondente. Você assiste, pausa, replica. Sem teoria — só execução na tela.</p>
+        </div>
+        <div class="u2-item">
+          <h5>Sessões ao vivo mensais</h5>
+          <p>Uma vez por mês, tira-dúvidas ao vivo em grupo. Você apresenta onde travou e sai com o próximo passo definido.</p>
+        </div>
+        <div class="u2-item">
+          <h5>Revisão da sua estrutura</h5>
+          <p>Antes de mostrar para o cliente, você manda o fluxo para revisão. Feedback em até 48h — o que ajustar, o que já está pronto.</p>
+        </div>
+        <div class="u2-item">
+          <h5>Suporte WhatsApp dias úteis</h5>
+          <p>Canal direto para quando você trava em configuração, tem dúvida sobre precificação ou quer uma segunda opinião antes de mandar proposta.</p>
+        </div>
+        <div class="u2-item">
+          <h5>Scripts e templates novos todo mês</h5>
+          <p>Novos scripts de prospecção, modelos de proposta e estruturas para nichos específicos — atualizados enquanto você estiver dentro.</p>
+        </div>
+        <div class="u2-item">
+          <h5>Grupo privado com outros arquitetos</h5>
+          <p>Troca de experiências com quem está executando. Indicações, dúvidas técnicas, casos reais — um dos maiores ativos da mentoria.</p>
+        </div>
+      </div>
+
+      <div class="condition-box">
+        <div class="condition-icon">↻</div>
+        <p>Você paga R$297/mês e pode cancelar quando quiser. Mas o objetivo real é este: <strong>ficar até fechar o primeiro cliente.</strong> Um único contrato de R$800/mês já paga a mentoria com sobra. A partir daí, a decisão de continuar ou sair é completamente sua.</p>
+      </div>
+
+      <div class="cta-area">
+        <a href="#" class="btn-primary" style="align-self:flex-start;">Quero E-book + Kit + Mentoria — R$97 + R$47 + R$297/mês →</a>
+        <a href="#" class="btn-ghost">Não, vou começar só com o e-book</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     GARANTIA
+════════════════════════════════════════ -->
+<section style="border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:40px 0;">
+  <div class="w">
+    <div class="guarantee">
+      <div class="guarantee-num">7</div>
+      <div>
+        <h4>Garantia incondicional de 7 dias</h4>
+        <p>Se você acessar o material e sentir que não era o que esperava — por qualquer motivo — manda uma mensagem em até 7 dias e devolvo 100% do valor. Sem perguntas, sem burocracia, sem demora. O risco é completamente meu.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     URGÊNCIA FINAL
+════════════════════════════════════════ -->
+<section class="urgency-section">
+  <div class="w">
+    <div class="sec-label">// Uma coisa antes de você fechar essa página</div>
+    <h2 class="sec-title">Este mercado <em>vai saturar.</em><br>Não sei quando.</h2>
+
+    <p class="body-p">Pode ser em 8 meses. Pode ser em 2 anos. Mas vai. É assim com todo mercado que explode. <strong>Quando isso acontecer, quem já tiver clientes recorrentes vai continuar lucrando. Quem entrar depois vai disputar preço com cinquenta pessoas fazendo a mesma coisa.</strong></p>
+
+    <p class="body-p">A diferença entre os dois cenários é a decisão que você toma nos próximos 5 minutos. Não estou te pedindo para acreditar em mim — estou te pedindo para <em>verificar por você mesmo com garantia de 7 dias.</em></p>
+
+    <div class="pull" style="border-left-color:rgba(245,242,237,0.15);">
+      O risco de não tentar é<br>
+      infinitamente maior<br>
+      do que o risco de R$97.
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start;margin-top:32px;">
+      <a href="#oferta" class="btn-primary">Garantir meu acesso agora — R$97 →</a>
+      <span style="font-family:'Courier Prime',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,242,237,0.3);">Pagamento único · Garantia 7 dias · Acesso em 2 minutos</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     FAQ
+════════════════════════════════════════ -->
+<section class="sec" style="border-bottom:1px solid var(--border);">
+  <div class="w">
+    <div class="sec-label">// Dúvidas frequentes</div>
+    <h2 class="sec-title">Perguntas que<br><em>você provavelmente tem.</em></h2>
+
+    <div class="faq-item">
+      <div class="faq-q">Preciso saber programar?</div>
+      <div class="faq-a">Não. As ferramentas ensinadas são no-code e low-code — você arrasta, conecta e configura. Se você sabe usar WhatsApp e Google, você consegue montar as estruturas.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">O que são os fluxos JSON do Kit?</div>
+      <div class="faq-a">São os workflows do n8n exportados em formato JSON — o arquivo que guarda toda a lógica do fluxo. Você importa esse arquivo no n8n com um clique, e o fluxo aparece já montado. <strong>Você só precisa configurar os dados do seu cliente</strong> (número da Z-API, informações da empresa, nome do agente). É a diferença entre montar do zero e personalizar um template pronto.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Quanto tempo leva para montar o primeiro projeto com o Kit?</div>
+      <div class="faq-a">Com o fluxo JSON já importado, <strong>2 a 4 horas</strong> para configurar os dados do cliente e testar. Sem o Kit, 8 a 15 horas construindo do zero. Para quem quer resultado mais rápido, o Kit faz diferença real.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Funciona para qualquer cidade do Brasil?</div>
+      <div class="faq-a">Sim. A prospecção é por WhatsApp e Instagram — você pode atender clientes em qualquer estado sem sair de casa. Cidades menores têm menos concorrência, o que é vantagem real.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Posso cancelar a mentoria quando quiser?</div>
+      <div class="faq-a">Sim. Sem multa, sem fidelidade mínima, sem pergunta. Você cancela via WhatsApp e a cobrança para no mês seguinte. A proposta da mentoria é simples: você fica enquanto sentir que o valor está sendo entregue.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Preciso comprar o e-book para ter o Kit ou a Mentoria?</div>
+      <div class="faq-a">Sim. O e-book é a base — ele explica a lógica, as ferramentas e o mercado. O Kit e a Mentoria aprofundam e aceleram. Entrar direto no Kit ou na Mentoria sem o contexto do e-book é pular etapas que vão fazer falta.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Como funciona a garantia?</div>
+      <div class="faq-a">7 dias corridos a partir da compra. Qualquer motivo. Manda mensagem no suporte e o reembolso é processado em até 5 dias úteis. Sem perguntas, sem burocracia.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer>
+  <div class="w">
+    <p>
+      Arquiteto de Agentes · Produto digital · Entrega imediata<br>
+      Garantia de 7 dias · Suporte via WhatsApp<br>
+      © 2026 · Todos os direitos reservados
+    </p>
+  </div>
+</footer>
+
+<script>
+// ── COUNTDOWN ──
+(function(){
+  const KEY='arquiteto_lp_deadline';
+  let dl=null;
+  try{dl=localStorage.getItem(KEY);}catch(e){}
+  if(!dl){
+    dl=Date.now()+24*60*60*1000;
+    try{localStorage.setItem(KEY,dl);}catch(e){}
+  }
+  dl=parseInt(dl);
+  function pad(n){return String(n).padStart(2,'0');}
+  function tick(){
+    const diff=Math.max(0,dl-Date.now());
+    const h=Math.floor(diff/3600000);
+    const m=Math.floor((diff%3600000)/60000);
+    const s=Math.floor((diff%60000)/1000);
+    const el=document.getElementById('timer');
+    if(el)el.textContent=pad(h)+':'+pad(m)+':'+pad(s);
+    if(diff>0)setTimeout(tick,1000);
+  }
+  tick();
+})();
+
+// ── VAGAS ──
+(function(){
+  let v=14;
+  setInterval(function(){
+    if(v>5&&Math.random()<0.25){
+      v--;
+      const el=document.getElementById('vagas');
+      if(el)el.textContent=v;
+    }
+  },55000);
+})();
+</script>
+</body>
+</html>

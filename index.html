@@ -3,365 +3,1325 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arquiteto de Agentes — Entre Antes que Todo Mundo Descubra</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<meta name="description" content="Aprenda a montar agentes de IA para empresas e cobrar R$800 a R$3.000/mês por cliente — sem programar. Acesso ao e-book, kit de fluxos prontos e mentoria completa.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0f0f0e">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Arquiteto de Agentes — O mercado de IA que as empresas pagam caro">
+<meta property="og:description" content="Aprenda a montar agentes de IA para empresas e cobrar R$800 a R$3.000/mês — sem programar. O mercado mais subexplorado de 2026.">
+<meta property="og:locale" content="pt_BR">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Arquiteto de Agentes — Entre antes que todo mundo descubra">
+<meta name="twitter:description" content="Agentes de IA para PMEs. Sem programar. R$800–R$3.000/mês por cliente. Aprenda agora.">
+
+<title>Arquiteto de Agentes — Domine o Mercado de IA Antes de Todo Mundo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#08080a;--bg2:#0e0e11;--surface:#131316;--surface2:#1a1a1f;
-  --border:#252530;--border2:#1e1e28;
-  --red:#d93020;--gold:#c8902a;--gold2:#e8aa40;
-  --cream:#f0ece4;--white:#fafaf8;
-  --text:#8888a0;--text2:#b0b0c8;--muted:#44445a;--green:#22c55e;
+:root {
+  --bg: #fafaf8;
+  --ink: #0f0f0e;
+  --ink2: #1e1e1c;
+  --dark: #111118;
+  --dark2: #1a1a24;
+  --surface: #f4f3ef;
+  --surface2: #eeecea;
+  --border: #e2e0db;
+  --border-dark: #2a2a38;
+  --red: #c8311a;
+  --red-light: #e03a20;
+  --gold: #b8832a;
+  --gold2: #d4a040;
+  --text: #5a5a58;
+  --text2: #3a3a38;
+  --muted: #9a9a98;
+  --green: #16a34a;
+  --blue: #2563eb;
+  --white: #ffffff;
+  --node-bg: #1e1e2e;
+  --node-border: #2e2e42;
 }
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--cream);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;line-height:1.6;}
-::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border);}
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;}
 
-.ubar{position:sticky;top:0;z-index:800;background:var(--red);padding:11px 20px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;}
-.ubar-text{font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.85);}
-.ubar-timer{font-family:'DM Sans',sans-serif;font-weight:600;font-size:1rem;color:#fff;background:rgba(0,0,0,0.25);padding:3px 14px;letter-spacing:0.05em;}
-.ubar-vagas{font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:0.15em;color:rgba(255,255,255,0.6);}
-.ubar-vagas strong{color:#ffe066;}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif; font-weight: 400; overflow-x: hidden; line-height: 1.6; -webkit-font-smoothing: antialiased; }
 
-nav{padding:18px 0;border-bottom:1px solid var(--border);}
-.nav-inner{max-width:1100px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between;}
-.nav-logo{font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;color:var(--cream);}
-.nav-tag{font-family:'Courier Prime',monospace;font-size:9px;letter-spacing:0.28em;text-transform:uppercase;color:var(--muted);}
-.nav-cta{font-family:'Courier Prime',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);border:1px solid var(--red);padding:7px 16px;text-decoration:none;transition:all .2s;}
-.nav-cta:hover{background:var(--red);color:#fff;}
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-.w{max-width:860px;margin:0 auto;padding:0 40px;}
-.wf{max-width:1100px;margin:0 auto;padding:0 40px;}
-
-/* HERO */
-.hero{padding:100px 0 80px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 65% -5%,rgba(217,48,32,0.07) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at -5% 85%,rgba(200,144,42,0.05) 0%,transparent 60%);pointer-events:none;}
-.hero-grid{display:grid;grid-template-columns:1fr 360px;gap:60px;align-items:start;}
-.hero-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
-.eyebrow-dot{width:6px;height:6px;background:var(--red);border-radius:50%;animation:pulse 2s ease infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.hero-eyebrow span{font-family:'Courier Prime',monospace;font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--red);}
-.hero-h1{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,5vw,4.4rem);font-weight:900;line-height:1.02;letter-spacing:-.02em;color:var(--white);margin-bottom:18px;}
-.hero-h1 em{font-style:italic;color:var(--red);font-weight:400;}
-.hero-bar{width:44px;height:2px;background:var(--red);margin-bottom:22px;}
-.hero-sub{font-size:1.02rem;color:var(--text2);line-height:1.78;font-weight:300;max-width:460px;margin-bottom:32px;}
-.hero-sub strong{color:var(--cream);font-weight:500;}
-.hero-btns{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
-.btn-main{display:inline-flex;align-items:center;gap:9px;background:var(--red);color:#fff;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.87rem;letter-spacing:.04em;padding:15px 28px;text-decoration:none;border:none;cursor:pointer;transition:background .2s;}
-.btn-main:hover{background:#b82818;}
-.btn-ghost-sm{font-family:'Courier Prime',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
-.btn-ghost-sm:hover{color:var(--text2);}
-
-/* HERO CARD */
-.hcard{background:var(--surface);border:1px solid var(--border);overflow:hidden;position:relative;}
-.hcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),var(--gold));}
-.hcard-inner{padding:28px;}
-.hc-label{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;}
-.hc-old{font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:var(--muted);text-decoration:line-through;margin-bottom:2px;}
-.hc-price{font-family:'Playfair Display',serif;font-size:3.6rem;font-weight:900;color:var(--white);line-height:1;margin-bottom:3px;}
-.hc-note{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:22px;}
-.hc-hr{border:none;border-top:1px solid var(--border);margin-bottom:18px;}
-.hc-row{display:flex;align-items:flex-start;gap:9px;padding:6px 0;font-size:.81rem;color:var(--text2);border-bottom:1px solid var(--border2);}
-.hc-row:last-of-type{border-bottom:none;}
-.hc-chk{color:var(--green);flex-shrink:0;font-size:.72rem;margin-top:2px;}
-.hc-btn{display:block;background:var(--red);color:#fff;text-align:center;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.84rem;padding:13px;margin-top:20px;text-decoration:none;transition:background .2s;letter-spacing:.03em;}
-.hc-btn:hover{background:#b82818;}
-.hc-guar{display:flex;align-items:center;gap:7px;margin-top:10px;justify-content:center;}
-.hc-guar span{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
-
-/* STATS */
-.stats{background:var(--surface);border-bottom:1px solid var(--border);}
-.stats-inner{display:grid;grid-template-columns:repeat(4,1fr);}
-.stat{padding:26px 32px;border-right:1px solid var(--border);}
-.stat:last-child{border-right:none;}
-.stat-v{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--white);line-height:1;margin-bottom:3px;}
-.stat-v span{color:var(--red);}
-.stat-l{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
-
-/* SECTIONS */
-.sec{padding:80px 0;border-bottom:1px solid var(--border);}
-.sec.dark{background:var(--bg2);}
-.eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.eyebrow::before{content:'';width:18px;height:1px;background:var(--red);}
-.eyebrow span{font-family:'Courier Prime',monospace;font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--red);}
-.sh{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,3.8vw,2.8rem);font-weight:700;line-height:1.1;color:var(--white);margin-bottom:18px;}
-.sh em{font-style:italic;font-weight:400;color:var(--red);}
-.bp{font-size:.96rem;color:var(--text2);line-height:1.85;margin-bottom:18px;font-weight:300;}
-.bp strong{color:var(--cream);font-weight:500;}
-.bp em{font-style:italic;color:var(--gold2);}
-
-/* HOOK */
-.hook-rows{margin:28px 0;}
-.hook-row{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3.5vw,2.6rem);font-weight:400;color:var(--text);line-height:1.2;padding:14px 0;border-bottom:1px solid var(--border2);display:flex;align-items:baseline;gap:16px;}
-.hook-row.final{color:var(--white);font-weight:700;font-style:italic;border-bottom:none;font-size:clamp(1.7rem,4vw,3rem);}
-.hook-row .accent{color:var(--red);}
-.hook-n{font-family:'Courier Prime',monospace;font-size:9px;color:var(--muted);letter-spacing:.1em;width:28px;flex-shrink:0;}
-.callout{border:1px solid var(--border);padding:18px 22px;margin:18px 0;background:var(--surface);}
-.callout.red{border-color:var(--red);background:rgba(217,48,32,0.04);}
-.callout.gold{border-color:var(--gold);background:rgba(200,144,42,0.05);}
-.cl{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:7px;}
-.callout.red .cl{color:var(--red);}
-.callout.gold .cl{color:var(--gold2);}
-.callout p{font-size:.85rem;color:var(--text2);line-height:1.7;}
-.callout p strong{color:var(--cream);}
-
-/* MECHANISM */
-.mech-compare{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin:28px 0;}
-.mc-col{background:var(--surface);padding:24px;}
-.mc-col.good{background:var(--surface2);border-left:2px solid var(--red);}
-.mc-head{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:14px;}
-.mc-col:first-child .mc-head{color:var(--muted);}
-.mc-col.good .mc-head{color:var(--red);}
-.mc-item{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--border2);font-size:.83rem;}
-.mc-item:last-child{border-bottom:none;}
-.mc-col:first-child .mc-item{color:var(--muted);}
-.mc-col.good .mc-item{color:var(--text2);}
-.mc-x{color:rgba(217,48,32,.5);flex-shrink:0;font-size:.72rem;}
-.mc-v{color:var(--green);flex-shrink:0;font-size:.72rem;}
-.mech-quote{border-left:3px solid var(--red);padding:14px 20px;margin:24px 0;background:rgba(217,48,32,.04);}
-.mech-quote p{font-family:'Playfair Display',serif;font-size:1.15rem;font-style:italic;color:var(--cream);line-height:1.5;}
-.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
-.pillar{background:var(--surface);padding:22px 18px;}
-.pil-n{font-family:'Playfair Display',serif;font-size:2.2rem;font-style:italic;color:var(--border);line-height:1;margin-bottom:8px;}
-.pil-t{font-size:.87rem;font-weight:500;color:var(--white);margin-bottom:5px;}
-.pil-d{font-size:.77rem;color:var(--text);line-height:1.6;}
-
-/* TABLE */
-.tbl-wrap{border:1px solid var(--border);overflow:hidden;margin:22px 0;}
-table{width:100%;border-collapse:collapse;}
-th{background:var(--surface2);font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);padding:11px 15px;text-align:left;font-weight:400;border-bottom:1px solid var(--border);}
-td{padding:12px 15px;border-bottom:1px solid var(--border2);font-size:.83rem;color:var(--text2);}
-tr:last-child td{border-bottom:none;}
-tr:hover td{background:rgba(255,255,255,.01);}
-td:first-child{color:var(--cream);font-weight:500;}
-.tg{color:var(--green);font-family:'Courier Prime',monospace;font-weight:700;}
-
-/* FIT */
-.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin:22px 0;}
-.fit-col{background:var(--surface);}
-.fit-hd{padding:12px 18px;border-bottom:1px solid var(--border);font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;display:flex;align-items:center;gap:7px;}
-.fit-hd.y{color:var(--green);background:rgba(34,197,94,.04);}
-.fit-hd.n{color:var(--red);background:rgba(217,48,32,.04);}
-.fdot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
-.fdot.y{background:var(--green);}
-.fdot.n{background:var(--red);}
-.fit-item{padding:11px 18px;border-bottom:1px solid var(--border2);font-size:.81rem;color:var(--text);line-height:1.5;display:flex;gap:9px;}
-.fit-item:last-child{border-bottom:none;}
-.fit-col.yes .fit-item::before{content:'✓';color:var(--green);flex-shrink:0;font-weight:600;font-size:.72rem;margin-top:2px;}
-.fit-col.no .fit-item::before{content:'✕';color:var(--red);flex-shrink:0;font-weight:600;font-size:.72rem;margin-top:2px;}
-.fit-item strong{color:var(--cream);}
-
-/* TESTIMONIALS */
-.testi-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin:22px 0;}
-.testi{background:var(--surface);padding:22px;}
-.testi-txt{font-family:'Playfair Display',serif;font-size:.93rem;font-style:italic;color:var(--text2);line-height:1.7;margin-bottom:14px;position:relative;padding-top:6px;}
-.testi-txt::before{content:'\201C';position:absolute;top:-6px;left:-3px;font-size:2.2rem;color:var(--red);opacity:.25;line-height:1;}
-.testi-auth{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);}
-.testi-auth strong{color:var(--gold2);}
-
-/* OFFER */
-.offer-sec{padding:80px 0 0;}
-.pblock{background:var(--surface);border:1px solid var(--border);overflow:hidden;margin-bottom:2px;}
-.pblock.gold-border{border-color:var(--gold);}
-.pb-top-line{height:2px;}
-.pb-top-line.red{background:linear-gradient(90deg,var(--red),transparent);}
-.pb-top-line.gold{background:linear-gradient(90deg,var(--gold),transparent);}
-.pb-top-line.dim{background:linear-gradient(90deg,rgba(217,48,32,.4),transparent);}
-.pb-body{padding:38px;}
-.pb-eye{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
-.pb-name{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3.2vw,2.2rem);font-style:italic;color:var(--white);line-height:1.1;margin-bottom:12px;}
-.pb-tag{font-size:.88rem;color:var(--text);line-height:1.72;max-width:520px;margin-bottom:22px;}
-.pb-tag strong{color:var(--cream);}
-.price-row{display:flex;align-items:flex-end;gap:14px;margin-bottom:22px;flex-wrap:wrap;}
-.p-old{font-family:'Playfair Display',serif;font-size:1.4rem;font-style:italic;color:var(--muted);text-decoration:line-through;}
-.p-new{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,5.5vw,4.2rem);font-weight:900;color:var(--white);line-height:1;}
-.p-note{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);line-height:1.85;padding-bottom:3px;}
-.inc-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px 18px;padding:18px 0;border-top:1px solid var(--border);}
-.inc-item{font-size:.79rem;color:var(--text);display:flex;gap:7px;align-items:flex-start;line-height:1.4;}
-.inc-item::before{content:'✓';color:var(--green);flex-shrink:0;font-weight:600;font-size:.7rem;margin-top:2px;}
-.pb-actions{margin-top:24px;display:flex;flex-direction:column;gap:8px;align-items:flex-start;}
-.btn-buy{display:inline-flex;align-items:center;gap:9px;background:var(--red);color:#fff;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.88rem;padding:15px 30px;text-decoration:none;border:none;cursor:pointer;transition:background .2s;letter-spacing:.03em;}
-.btn-buy:hover{background:#b82818;}
-.btn-buy.gld{background:var(--gold);}
-.btn-buy.gld:hover{background:#a87020;}
-.btn-note{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
-.btn-skip{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--border);padding:8px 14px;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block;}
-.btn-skip:hover{color:var(--text2);border-color:var(--muted);}
-.up-badge{display:inline-flex;align-items:center;gap:7px;margin-bottom:12px;}
-.up-dot{width:5px;height:5px;border-radius:50%;}
-.up-dot.gld{background:var(--gold2);}
-.up-dot.rd{background:var(--red);}
-.up-lbl{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.24em;text-transform:uppercase;}
-.up-lbl.gld{color:var(--gold2);}
-.up-lbl.dim{color:var(--text);}
-.mod-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border2);border:1px solid var(--border);margin:18px 0;}
-.mod{background:var(--bg2);padding:16px;}
-.mod h5{font-size:.82rem;font-weight:500;color:var(--cream);margin-bottom:4px;}
-.mod p{font-size:.75rem;color:var(--text);line-height:1.55;}
-.mod-tag{display:inline-block;font-family:'Courier Prime',monospace;font-size:7px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold);padding:2px 7px;margin-top:7px;}
-.cond{background:rgba(255,255,255,.02);border:1px solid var(--border);padding:14px 18px;margin:14px 0;display:flex;gap:11px;}
-.cond-i{font-family:'Playfair Display',serif;font-size:1.3rem;font-style:italic;color:var(--muted);flex-shrink:0;line-height:1;}
-.cond p{font-size:.81rem;color:var(--text);line-height:1.65;}
-.cond p strong{color:var(--cream);}
-
-/* GUARANTEE */
-.guar{border:1px solid var(--border);padding:22px 26px;display:flex;gap:18px;align-items:flex-start;background:var(--surface);margin:24px 0;}
-.guar-n{font-family:'Playfair Display',serif;font-size:2.8rem;font-style:italic;font-weight:900;color:var(--gold);line-height:1;flex-shrink:0;}
-.guar-b h4{font-size:.88rem;font-weight:500;color:var(--cream);margin-bottom:3px;}
-.guar-b p{font-size:.79rem;color:var(--text);line-height:1.6;}
-
-/* URGENCY FINAL */
-.uf{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 0;}
-.uf-stmt{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,4rem);font-weight:900;line-height:1.0;color:var(--white);margin-bottom:22px;}
-.uf-stmt em{font-style:italic;color:var(--red);font-weight:400;}
-
-/* FAQ */
-.faq-sec{padding:80px 0;border-bottom:1px solid var(--border);}
-.faq-item{border-bottom:1px solid var(--border2);padding:17px 0;}
-.faq-item:first-child{border-top:1px solid var(--border2);}
-.faq-q{font-size:.89rem;font-weight:500;color:var(--cream);margin-bottom:5px;}
-.faq-a{font-size:.81rem;color:var(--text);line-height:1.7;}
-.faq-a strong{color:var(--text2);}
-
-footer{padding:34px 0;text-align:center;}
-footer p{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);line-height:2.2;}
-
-@media(max-width:800px){
-  .nav-inner,.w,.wf{padding:0 20px;}
-  .hero-grid{grid-template-columns:1fr;}
-  .hcard{display:none;}
-  .stats-inner{grid-template-columns:1fr 1fr;}
-  .mech-compare,.fit-grid,.testi-grid,.inc-grid,.mod-grid,.pillars{grid-template-columns:1fr;}
-  .pb-body{padding:22px;}
+/* ─── URGENCY ─── */
+.urgency {
+  background: var(--ink);
+  padding: 10px 20px;
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  flex-wrap: wrap; position: sticky; top: 0; z-index: 900;
 }
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-.hero{animation:fadeUp .7s ease both;}
+.urgency-text { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.7); font-weight: 500; }
+.urgency-timer { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #fff; background: var(--red); padding: 3px 12px; letter-spacing: 0.06em; }
+.urgency-spots { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+.urgency-spots strong { color: #fbbf24; }
+
+/* ─── NAV ─── */
+nav {
+  background: rgba(250,250,248,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px; position: sticky; top: 40px; z-index: 800;
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-mark { width: 28px; height: 28px; background: var(--ink); display: flex; align-items: center; justify-content: center; }
+.nav-logo-mark svg { width: 14px; height: 14px; fill: #fff; }
+.nav-logo-text { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-style: italic; color: var(--ink); }
+.nav-links { display: flex; align-items: center; gap: 32px; }
+.nav-link { font-size: 13px; color: var(--text); text-decoration: none; font-weight: 400; transition: color 0.2s; }
+.nav-link:hover { color: var(--ink); }
+.nav-cta {
+  background: var(--ink); color: #fff;
+  font-size: 13px; font-weight: 500;
+  padding: 10px 22px; text-decoration: none;
+  transition: background 0.2s; white-space: nowrap;
+}
+.nav-cta:hover { background: var(--red); }
+
+/* ─── WRAPPERS ─── */
+.w { max-width: 900px; margin: 0 auto; padding: 0 40px; }
+.wl { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 92vh;
+  display: flex; align-items: center;
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(200,49,26,0.08);
+  border: 1px solid rgba(200,49,26,0.2);
+  padding: 5px 14px;
+  margin-bottom: 24px;
+}
+.hero-tag-dot { width: 5px; height: 5px; background: var(--red); border-radius: 50%; animation: blink 2s ease infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.hero-tag span { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--red); font-weight: 500; }
+
+.hero-h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+.hero-h1 em { font-style: italic; font-weight: 700; color: var(--red); }
+
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--text);
+  line-height: 1.75;
+  max-width: 440px;
+  margin-bottom: 36px;
+  font-weight: 300;
+}
+.hero-sub strong { color: var(--ink2); font-weight: 500; }
+
+.hero-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 40px; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--ink); color: #fff;
+  font-size: 14px; font-weight: 500;
+  padding: 16px 32px; text-decoration: none;
+  border: none; cursor: pointer;
+  transition: background 0.2s;
+  letter-spacing: 0.02em;
+}
+.btn-primary:hover { background: var(--red); }
+.btn-primary svg { width: 16px; height: 16px; fill: #fff; transition: transform 0.2s; }
+.btn-primary:hover svg { transform: translateX(3px); }
+.btn-secondary {
+  font-size: 13px; color: var(--text); text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.2s;
+}
+.btn-secondary:hover { color: var(--ink); }
+
+.hero-proof {
+  display: flex; align-items: center; gap: 14px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.hero-proof-avatars { display: flex; }
+.avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 2px solid var(--bg);
+  margin-right: -8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: #fff;
+}
+.hero-proof-text { font-size: 12px; color: var(--muted); line-height: 1.4; }
+.hero-proof-text strong { color: var(--ink2); }
+
+/* HERO RIGHT — WORKFLOW PREVIEW */
+.hero-visual {
+  position: relative;
+}
+
+.workflow-card {
+  background: var(--node-bg);
+  border: 1px solid var(--node-border);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.workflow-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,49,26,0.6), rgba(212,160,64,0.4), transparent);
+}
+
+.wf-header {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--node-border);
+}
+.wf-dots { display: flex; gap: 5px; }
+.wf-dot { width: 8px; height: 8px; border-radius: 50%; }
+.wf-dot.r { background: #ff5f57; }
+.wf-dot.y { background: #febc2e; }
+.wf-dot.g { background: #28c840; }
+.wf-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.4); margin-left: 4px; }
+.wf-status { margin-left: auto; display: flex; align-items: center; gap: 5px; }
+.wf-status-dot { width: 6px; height: 6px; background: #28c840; border-radius: 50%; animation: pulse-green 1.5s ease infinite; }
+@keyframes pulse-green { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.wf-status span { font-size: 10px; color: #28c840; font-family: 'JetBrains Mono', monospace; }
+
+/* NODES */
+.nodes { display: flex; flex-direction: column; gap: 8px; }
+.node {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 10px 14px;
+  position: relative;
+  transition: border-color 0.3s;
+}
+.node.active { border-color: rgba(200,49,26,0.5); background: rgba(200,49,26,0.08); }
+.node.done { border-color: rgba(40,200,64,0.3); background: rgba(40,200,64,0.05); }
+.node-icon {
+  width: 32px; height: 32px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.node-body { flex: 1; }
+.node-title { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.85); margin-bottom: 2px; }
+.node-sub { font-size: 10px; color: rgba(255,255,255,0.35); font-family: 'JetBrains Mono', monospace; }
+.node-badge {
+  font-size: 9px; padding: 2px 8px;
+  border-radius: 100px;
+  font-weight: 500; white-space: nowrap;
+}
+.node-badge.run { background: rgba(200,49,26,0.2); color: #ff8070; }
+.node-badge.ok { background: rgba(40,200,64,0.15); color: #4ade80; }
+.node-badge.wait { background: rgba(251,191,36,0.15); color: #fbbf24; }
+.node-connector {
+  width: 1px; height: 16px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  margin-left: 27px;
+}
+
+.wf-footer {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--node-border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.wf-metric { text-align: center; }
+.wf-metric-val { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500; color: #fff; display: block; }
+.wf-metric-label { font-size: 9px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.15em; }
+
+/* Floating cards */
+.float-card {
+  position: absolute;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  font-size: 12px;
+}
+.float-card.left { left: -48px; top: 50%; transform: translateY(-50%); min-width: 130px; }
+.float-card.bottom { right: -20px; bottom: -24px; min-width: 150px; }
+.fc-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 4px; font-weight: 500; }
+.fc-val { font-weight: 600; color: var(--ink); font-size: 13px; }
+.fc-sub { font-size: 10px; color: var(--green); font-weight: 500; }
+
+/* ─── TOOLS SCROLLER ─── */
+.tools-band {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 18px 0;
+  overflow: hidden;
+  position: relative;
+}
+.tools-band::before, .tools-band::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2; pointer-events: none;
+}
+.tools-band::before { left: 0; background: linear-gradient(to right, var(--ink), transparent); }
+.tools-band::after { right: 0; background: linear-gradient(to left, var(--ink), transparent); }
+
+.tools-track {
+  display: flex; gap: 0;
+  animation: scroll-tools 30s linear infinite;
+  width: max-content;
+}
+.tools-track:hover { animation-play-state: paused; }
+@keyframes scroll-tools { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+.tool-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 28px;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  white-space: nowrap;
+}
+.tool-icon {
+  width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.tool-name { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.55); letter-spacing: 0.02em; }
+
+/* ─── STATS ─── */
+.stats-sec {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.stat-item { background: var(--bg); padding: 32px 28px; }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; color: var(--ink); line-height: 1; margin-bottom: 6px; }
+.stat-num span { color: var(--red); }
+.stat-label { font-size: 12px; color: var(--muted); letter-spacing: 0.05em; line-height: 1.4; }
+
+/* ─── SECTION COMMONS ─── */
+.sec { padding: 96px 0; border-bottom: 1px solid var(--border); }
+.sec.dark { background: var(--dark); border-bottom-color: var(--border-dark); }
+.sec.tinted { background: var(--surface); }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-bottom: 14px;
+}
+.eyebrow::before { content: ''; width: 16px; height: 1.5px; background: var(--red); display: block; }
+.eyebrow span { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--red); font-weight: 500; }
+.eyebrow.light span { color: rgba(255,255,255,0.4); }
+.eyebrow.light::before { background: rgba(255,255,255,0.2); }
+
+.sh { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.1; color: var(--ink); margin-bottom: 18px; }
+.sh em { font-style: italic; font-weight: 400; color: var(--red); }
+.sh.light { color: #fff; }
+.sh.light em { color: rgba(255,255,255,0.5); }
+
+.lead { font-size: 1rem; color: var(--text); line-height: 1.8; margin-bottom: 18px; max-width: 560px; }
+.lead strong { color: var(--ink2); font-weight: 500; }
+.lead.light { color: rgba(255,255,255,0.55); }
+.lead.light strong { color: rgba(255,255,255,0.85); }
+
+/* ─── HOOK ─── */
+.hook-list { margin: 32px 0; }
+.hook-item {
+  display: flex; align-items: baseline; gap: 18px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+.hook-item:last-child { border-bottom: none; padding-bottom: 0; }
+.hook-n { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); width: 24px; flex-shrink: 0; }
+.hook-text { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3vw, 2.2rem); color: var(--text2); line-height: 1.2; }
+.hook-item.final .hook-text { color: var(--ink); font-weight: 700; font-style: italic; font-size: clamp(1.5rem, 3.5vw, 2.4rem); }
+.hook-item.final .hook-text em { color: var(--red); font-style: normal; }
+
+/* ─── CALLOUT ─── */
+.callout {
+  border-left: 3px solid var(--border);
+  padding: 18px 20px;
+  margin: 24px 0;
+  background: var(--surface);
+}
+.callout.red { border-left-color: var(--red); background: rgba(200,49,26,0.04); }
+.callout.gold { border-left-color: var(--gold2); background: rgba(212,160,64,0.05); }
+.callout.green { border-left-color: var(--green); background: rgba(22,163,74,0.04); }
+.callout-label { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600; margin-bottom: 7px; }
+.callout.red .callout-label { color: var(--red); }
+.callout.gold .callout-label { color: var(--gold2); }
+.callout.green .callout-label { color: var(--green); }
+.callout p { font-size: 0.88rem; color: var(--text2); line-height: 1.72; }
+.callout p strong { color: var(--ink); font-weight: 500; }
+
+/* ─── MECHANISM ─── */
+.mech-split {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+  margin: 32px 0;
+}
+.mech-col { background: var(--bg); padding: 28px; }
+.mech-col.accent { background: var(--ink); }
+.mech-head { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; padding-bottom: 14px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.mech-col:first-child .mech-head { color: var(--muted); border-bottom-color: var(--border); }
+.mech-col.accent .mech-head { color: rgba(255,255,255,0.3); border-bottom-color: rgba(255,255,255,0.08); }
+.mech-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.mech-col.accent .mech-row { border-bottom-color: rgba(255,255,255,0.06); color: rgba(255,255,255,0.75); }
+.mech-row:last-child { border-bottom: none; }
+.mech-col:first-child .mech-row { color: var(--muted); }
+.mx { color: var(--red); opacity: 0.5; font-size: 11px; flex-shrink: 0; }
+.mv { color: var(--green); font-size: 11px; flex-shrink: 0; }
+
+.mech-quote {
+  background: var(--ink);
+  padding: 28px 32px;
+  margin: 28px 0;
+  border-left: 3px solid var(--red);
+  position: relative;
+}
+.mech-quote p { font-family: 'Playfair Display', serif; font-size: clamp(1rem, 2.2vw, 1.4rem); font-style: italic; color: rgba(255,255,255,0.85); line-height: 1.55; }
+
+.pillars { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.pillar { background: var(--bg); padding: 24px 20px; }
+.pil-n { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-style: italic; color: var(--border); line-height: 1; margin-bottom: 10px; font-weight: 900; }
+.pil-t { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.pil-d { font-size: 13px; color: var(--text); line-height: 1.6; }
+
+/* ─── WORKFLOW SHOWCASE ─── */
+.wf-showcase { padding: 96px 0; border-bottom: 1px solid var(--border); background: var(--surface); }
+.wf-showcase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; margin-top: 48px; }
+.wf-tabs { display: flex; gap: 0; border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
+.wf-tab { flex: 1; padding: 10px 16px; font-size: 12px; font-weight: 500; color: var(--muted); background: var(--bg); border: none; cursor: pointer; border-right: 1px solid var(--border); transition: all 0.2s; text-align: center; }
+.wf-tab:last-child { border-right: none; }
+.wf-tab.active { background: var(--ink); color: #fff; }
+
+.wf-panel {
+  background: var(--node-bg);
+  border: 1px solid var(--node-border);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+.wf-panel-header {
+  background: rgba(255,255,255,0.03);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--node-border);
+  display: flex; align-items: center; gap: 8px;
+}
+.wf-panel-dots { display: flex; gap: 5px; }
+.wf-panel-dot { width: 8px; height: 8px; border-radius: 50%; }
+.wf-panel-title { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.3); margin-left: 4px; }
+.wf-panel-run { margin-left: auto; background: rgba(200,49,26,0.2); color: #ff8070; font-size: 9px; font-family: 'JetBrains Mono', monospace; padding: 2px 8px; border-radius: 100px; }
+
+.wf-canvas { padding: 20px 16px; }
+.wf-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+.wf-node-mini {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 8px 12px;
+  min-width: 0;
+}
+.wf-node-mini.trigger { border-color: rgba(200,49,26,0.4); background: rgba(200,49,26,0.08); }
+.wf-node-mini.ai { border-color: rgba(139,92,246,0.4); background: rgba(139,92,246,0.08); }
+.wf-node-mini.action { border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.06); }
+.wf-node-mini.cond { border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.06); }
+.wf-node-emoji { font-size: 14px; flex-shrink: 0; }
+.wf-node-info { min-width: 0; }
+.wf-node-name { font-size: 10px; font-weight: 500; color: rgba(255,255,255,0.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wf-node-type { font-size: 9px; color: rgba(255,255,255,0.3); font-family: 'JetBrains Mono', monospace; }
+.wf-arrow { color: rgba(255,255,255,0.2); font-size: 11px; flex-shrink: 0; }
+.wf-branch { padding-left: 28px; }
+.wf-branch-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; position: relative; }
+.wf-branch-row::before { content: '└'; font-size: 10px; color: rgba(255,255,255,0.15); flex-shrink: 0; }
+
+.wf-stats-row {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: rgba(255,255,255,0.05);
+  border-top: 1px solid var(--node-border);
+}
+.wf-stat { padding: 12px; text-align: center; }
+.wf-stat-val { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; color: #fff; display: block; margin-bottom: 2px; }
+.wf-stat-label { font-size: 9px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.12em; }
+
+/* SHOWCASE RIGHT */
+.wf-showcase-right {}
+.wf-benefit-list { margin: 20px 0; }
+.wf-benefit {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+.wf-benefit:last-child { border-bottom: none; }
+.wf-benefit-icon {
+  width: 36px; height: 36px;
+  background: rgba(200,49,26,0.08);
+  border: 1px solid rgba(200,49,26,0.15);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0; margin-top: 2px;
+}
+.wf-benefit-body h4 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+.wf-benefit-body p { font-size: 13px; color: var(--text); line-height: 1.55; }
+
+/* ─── MARKET TABLE ─── */
+.market-sec { padding: 96px 0; border-bottom: 1px solid var(--border); }
+.tbl-wrap { border: 1px solid var(--border); overflow: hidden; margin: 28px 0; }
+table { width: 100%; border-collapse: collapse; }
+th { background: var(--ink); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.5); padding: 12px 16px; text-align: left; font-weight: 500; border-bottom: 1px solid var(--border-dark); }
+td { padding: 13px 16px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text2); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--surface); }
+td:first-child { color: var(--ink); font-weight: 500; }
+.tg { color: var(--green); font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+
+/* ─── FIT ─── */
+.fit-sec { padding: 96px 0; border-bottom: 1px solid var(--border); background: var(--surface); }
+.fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 28px 0; }
+.fit-col { background: var(--bg); }
+.fit-head { padding: 14px 20px; border-bottom: 1px solid var(--border); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.fit-head.y { color: var(--green); background: rgba(22,163,74,0.04); }
+.fit-head.n { color: var(--red); background: rgba(200,49,26,0.04); }
+.fdot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.fdot.y { background: var(--green); }
+.fdot.n { background: var(--red); }
+.fit-item { padding: 12px 20px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text); line-height: 1.5; display: flex; gap: 10px; align-items: flex-start; }
+.fit-item:last-child { border-bottom: none; }
+.fit-col.yes .fit-item::before { content: '✓'; color: var(--green); flex-shrink: 0; font-weight: 700; font-size: 11px; margin-top: 1px; }
+.fit-col.no .fit-item::before { content: '✕'; color: var(--red); flex-shrink: 0; font-weight: 700; font-size: 11px; margin-top: 1px; }
+.fit-item strong { color: var(--ink2); font-weight: 500; }
+
+/* ─── TESTIMONIALS ─── */
+.testi-sec { padding: 96px 0; border-bottom: 1px solid var(--border); }
+.testi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 32px 0; }
+.testi {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 24px;
+  position: relative;
+}
+.testi-stars { color: var(--gold2); font-size: 13px; margin-bottom: 12px; letter-spacing: 2px; }
+.testi-text { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 16px; font-style: italic; }
+.testi-author { font-size: 12px; font-weight: 600; color: var(--ink); }
+.testi-author-sub { font-size: 11px; color: var(--muted); }
+.testi-tag { position: absolute; top: 16px; right: 16px; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green); background: rgba(22,163,74,0.08); border: 1px solid rgba(22,163,74,0.2); padding: 3px 8px; }
+
+/* ─── OFFER ─── */
+.offer-sec { padding: 96px 0 0; }
+.offer-intro { margin-bottom: 48px; }
+
+.pblock {
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 2px;
+  background: var(--bg);
+}
+.pblock.featured { border-color: var(--ink); }
+.pblock.gold-b { border-color: var(--gold2); }
+
+.pb-accent-bar { height: 3px; }
+.pb-accent-bar.dark { background: var(--ink); }
+.pb-accent-bar.red { background: var(--red); }
+.pb-accent-bar.gold { background: linear-gradient(90deg, var(--gold), var(--gold2)); }
+
+.pb-inner { padding: 40px; }
+.pb-level { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 12px; }
+.pb-name { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); font-style: italic; color: var(--ink); line-height: 1.15; margin-bottom: 12px; }
+.pb-tag { font-size: 14px; color: var(--text); line-height: 1.72; max-width: 520px; margin-bottom: 24px; }
+.pb-tag strong { color: var(--ink2); font-weight: 500; }
+
+.price-row { display: flex; align-items: flex-end; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
+.p-old { font-size: 1.3rem; color: var(--muted); text-decoration: line-through; }
+.p-new { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 5.5vw, 4.2rem); font-weight: 900; color: var(--ink); line-height: 1; }
+.p-note { font-size: 11px; color: var(--muted); line-height: 1.8; letter-spacing: 0.04em; padding-bottom: 4px; }
+
+.inc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; padding: 20px 0; border-top: 1px solid var(--border); }
+.inc-item { font-size: 13px; color: var(--text2); display: flex; gap: 8px; align-items: flex-start; line-height: 1.4; }
+.inc-item::before { content: '✓'; color: var(--green); flex-shrink: 0; font-weight: 700; font-size: 11px; margin-top: 2px; }
+
+.pb-actions { margin-top: 28px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+.btn-cta { display: inline-flex; align-items: center; gap: 10px; background: var(--ink); color: #fff; font-size: 14px; font-weight: 500; padding: 16px 32px; text-decoration: none; border: none; cursor: pointer; transition: background 0.2s; letter-spacing: 0.02em; }
+.btn-cta:hover { background: var(--red); }
+.btn-cta.gold { background: var(--gold); }
+.btn-cta.gold:hover { background: #9a6a18; }
+.btn-note { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.btn-note::before { content: '🔒'; font-size: 11px; }
+.btn-skip { font-size: 12px; color: var(--muted); background: none; border: none; cursor: pointer; text-decoration: underline; transition: color 0.2s; }
+.btn-skip:hover { color: var(--text); }
+
+.up-badge { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 12px; padding: 4px 12px; background: rgba(212,160,64,0.08); border: 1px solid rgba(212,160,64,0.2); }
+.up-badge span { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold2); font-weight: 500; }
+
+.mod-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 20px 0; }
+.mod { background: var(--surface); padding: 18px; }
+.mod h5 { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+.mod p { font-size: 12px; color: var(--text); line-height: 1.55; }
+.mod-badge { display: inline-block; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(22,163,74,0.08); color: var(--green); border: 1px solid rgba(22,163,74,0.2); padding: 2px 8px; margin-top: 8px; font-weight: 500; }
+
+.cond-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--gold2); padding: 16px 20px; margin: 16px 0; }
+.cond-box p { font-size: 13px; color: var(--text2); line-height: 1.65; }
+.cond-box p strong { color: var(--ink); font-weight: 500; }
+
+/* ─── GUARANTEE ─── */
+.guar {
+  display: flex; gap: 20px; align-items: flex-start;
+  border: 1px solid var(--border); padding: 24px 28px;
+  background: var(--surface); margin: 28px 0;
+}
+.guar-num { font-family: 'Playfair Display', serif; font-size: 3rem; font-style: italic; font-weight: 900; color: var(--gold2); line-height: 1; flex-shrink: 0; }
+.guar-body h4 { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+.guar-body p { font-size: 13px; color: var(--text); line-height: 1.6; }
+
+/* ─── URGENCY FINAL ─── */
+.uf { background: var(--ink); padding: 96px 0; }
+.uf-h { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 900; color: #fff; line-height: 1.05; margin-bottom: 20px; }
+.uf-h em { font-style: italic; color: var(--red); font-weight: 400; }
+.uf-sub { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.75; margin-bottom: 36px; max-width: 480px; }
+.uf-sub strong { color: rgba(255,255,255,0.8); font-weight: 500; }
+
+/* ─── FAQ ─── */
+.faq-sec { padding: 96px 0; border-bottom: 1px solid var(--border); background: var(--surface); }
+.faq-item { border-bottom: 1px solid var(--border); padding: 18px 0; }
+.faq-item:first-child { border-top: 1px solid var(--border); }
+.faq-q { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+.faq-a { font-size: 13px; color: var(--text); line-height: 1.72; }
+.faq-a strong { color: var(--ink2); font-weight: 500; }
+
+/* ─── FOOTER ─── */
+footer { padding: 40px 0; text-align: center; background: var(--bg); border-top: 1px solid var(--border); }
+footer p { font-size: 12px; color: var(--muted); line-height: 2.2; letter-spacing: 0.03em; }
+footer a { color: var(--muted); text-decoration: none; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  nav { padding: 0 20px; }
+  nav .nav-links { display: none; }
+  .w, .wl { padding: 0 20px; }
+  .hero-grid, .wf-showcase-grid, .mech-split, .fit-grid, .testi-grid, .inc-grid, .mod-grid, .pillars { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .pb-inner { padding: 24px 20px; }
+  .wf-tabs { overflow-x: auto; }
+  .float-card { display: none; }
+  .hook-item { flex-direction: column; gap: 4px; }
+  .hook-n { width: auto; }
+  .ubar { padding: 8px 16px; gap: 10px; }
+  .urgency-spots { display: none; }
+}
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+.hero-left { animation: fadeUp 0.7s ease both; }
+.hero-visual { animation: fadeUp 0.7s 0.15s ease both; }
 </style>
 </head>
 <body>
 
-<div class="ubar">
-  <span class="ubar-text">⬛ Este preço fecha em:</span>
-  <span class="ubar-timer" id="timer">23:59:59</span>
-  <span class="ubar-vagas">— vagas abertas: <strong id="vagas">14</strong></span>
+<!-- URGENCY BAR -->
+<div class="urgency">
+  <span class="urgency-text">⬛ Preço de lançamento encerra em:</span>
+  <span class="urgency-timer" id="timer">23:59:59</span>
+  <span class="urgency-spots">Vagas abertas: <strong id="vagas">14</strong></span>
 </div>
 
+<!-- NAV -->
 <nav>
-  <div class="nav-inner">
-    <span class="nav-tag">Produto digital · 2026</span>
-    <span class="nav-logo">Arquiteto de Agentes</span>
-    <a href="#oferta" class="nav-cta">Ver oferta →</a>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <span class="nav-logo-text">Arquiteto de Agentes</span>
+  </a>
+  <div class="nav-links">
+    <a href="#mecanismo" class="nav-link">Como funciona</a>
+    <a href="#mercado" class="nav-link">O mercado</a>
+    <a href="#oferta" class="nav-link">A oferta</a>
   </div>
+  <a href="#oferta" class="nav-cta">Garantir acesso →</a>
 </nav>
 
-<!-- HERO -->
+<!-- ═══════════ HERO ═══════════ -->
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="wf">
+  <div class="wl">
     <div class="hero-grid">
-      <div>
-        <div class="hero-eyebrow"><div class="eyebrow-dot"></div><span>Acesso restrito · Edição de lançamento</span></div>
-        <h1 class="hero-h1">Empresas pagam<br>R$3.000 a R$15.000<br>por isso. <em>Ninguém<br>está te ensinando.</em></h1>
-        <div class="hero-bar"></div>
-        <p class="hero-sub">Agentes de IA para pequenos negócios é o mercado mais subexplorado do Brasil em 2026. <strong>Sem programar. Sem experiência técnica. Com as ferramentas certas.</strong></p>
-        <div class="hero-btns">
-          <a href="#oferta" class="btn-main">Quero entrar agora →</a>
-          <a href="#mecanismo" class="btn-ghost-sm">Como funciona ↓</a>
+      <div class="hero-left">
+        <div class="hero-tag"><div class="hero-tag-dot"></div><span>Edição de lançamento · 2026</span></div>
+        <h1 class="hero-h1">
+          O mercado de IA<br>
+          que as empresas<br>
+          pagam caro.<br>
+          <em>Ainda sem concorrência.</em>
+        </h1>
+        <p class="hero-sub">
+          Agentes de IA para PMEs é a maior oportunidade de serviço digital de 2026. <strong>Sem programar. Sem faculdade. Sem investimento inicial.</strong> Com o posicionamento certo e as ferramentas certas.
+        </p>
+        <div class="hero-actions">
+          <a href="#oferta" class="btn-primary">
+            Quero entrar agora
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          </a>
+          <a href="#mecanismo" class="btn-secondary">Como funciona ↓</a>
+        </div>
+        <div class="hero-proof">
+          <div class="hero-proof-avatars">
+            <div class="avatar" style="background:#c8311a;">C</div>
+            <div class="avatar" style="background:#2563eb;">F</div>
+            <div class="avatar" style="background:#16a34a;">J</div>
+            <div class="avatar" style="background:#b8832a;">B</div>
+          </div>
+          <div class="hero-proof-text">
+            <strong>+200 arquitetos</strong> já acessaram o material<br>
+            Primeiros clientes fechados em 30 dias
+          </div>
         </div>
       </div>
-      <div class="hcard">
-        <div class="hcard-inner">
-          <div class="hc-label">// E-book · Acesso imediato</div>
-          <div class="hc-old">R$297</div>
-          <div class="hc-price">R$97</div>
-          <div class="hc-note">Pagamento único · Acesso vitalício</div>
-          <hr class="hc-hr">
-          <div class="hc-row"><span class="hc-chk">✓</span>E-book completo — 40 páginas</div>
-          <div class="hc-row"><span class="hc-chk">✓</span>Mapa de 6 nichos pagantes</div>
-          <div class="hc-row"><span class="hc-chk">✓</span>Script de prospecção WhatsApp</div>
-          <div class="hc-row"><span class="hc-chk">✓</span>Planilha de precificação</div>
-          <div class="hc-row"><span class="hc-chk">✓</span>System prompt pronto para usar</div>
-          <div class="hc-row"><span class="hc-chk">✓</span>Roteiro de reunião de venda</div>
-          <a href="#oferta" class="hc-btn">Garantir acesso — R$97</a>
-          <div class="hc-guar"><span class="hc-chk">✓</span><span>Garantia incondicional de 7 dias</span></div>
+
+      <!-- WORKFLOW PREVIEW -->
+      <div class="hero-visual">
+        <div class="float-card left">
+          <div class="fc-label">Ticket médio</div>
+          <div class="fc-val">R$1.200/mês</div>
+          <div class="fc-sub">↑ por cliente</div>
+        </div>
+        <div class="workflow-card">
+          <div class="wf-header">
+            <div class="wf-dots">
+              <div class="wf-dot r"></div>
+              <div class="wf-dot y"></div>
+              <div class="wf-dot g"></div>
+            </div>
+            <span class="wf-title">agente-clinica-bella.json</span>
+            <div class="wf-status"><div class="wf-status-dot"></div><span>Ativo</span></div>
+          </div>
+          <div class="nodes">
+            <div class="node done">
+              <div class="node-icon" style="background:rgba(34,197,94,0.15);">📱</div>
+              <div class="node-body">
+                <div class="node-title">WhatsApp — Mensagem recebida</div>
+                <div class="node-sub">Z-API Webhook · trigger</div>
+              </div>
+              <span class="node-badge ok">✓ ok</span>
+            </div>
+            <div class="node-connector"></div>
+            <div class="node done">
+              <div class="node-icon" style="background:rgba(37,99,235,0.15);">🧠</div>
+              <div class="node-body">
+                <div class="node-title">AI Agent — Sofia</div>
+                <div class="node-sub">GPT-4o-mini · system prompt</div>
+              </div>
+              <span class="node-badge ok">✓ ok</span>
+            </div>
+            <div class="node-connector"></div>
+            <div class="node active">
+              <div class="node-icon" style="background:rgba(139,92,246,0.15);">📅</div>
+              <div class="node-body">
+                <div class="node-title">Verificar Google Calendar</div>
+                <div class="node-sub">Buscar horários disponíveis</div>
+              </div>
+              <span class="node-badge run">Running</span>
+            </div>
+            <div class="node-connector"></div>
+            <div class="node">
+              <div class="node-icon" style="background:rgba(251,191,36,0.15);">📊</div>
+              <div class="node-body">
+                <div class="node-title">Salvar no Google Sheets</div>
+                <div class="node-sub">Memória + histórico do cliente</div>
+              </div>
+              <span class="node-badge wait">Aguardando</span>
+            </div>
+            <div class="node-connector"></div>
+            <div class="node">
+              <div class="node-icon" style="background:rgba(34,197,94,0.15);">✉️</div>
+              <div class="node-body">
+                <div class="node-title">Enviar resposta — Z-API</div>
+                <div class="node-sub">Confirmar agendamento</div>
+              </div>
+              <span class="node-badge wait">Aguardando</span>
+            </div>
+          </div>
+          <div class="wf-footer">
+            <div class="wf-metric"><span class="wf-metric-val">247</span><span class="wf-metric-label">Execuções</span></div>
+            <div class="wf-metric"><span class="wf-metric-val">1.8s</span><span class="wf-metric-label">Tempo médio</span></div>
+            <div class="wf-metric"><span class="wf-metric-val">99.2%</span><span class="wf-metric-label">Uptime</span></div>
+          </div>
+        </div>
+        <div class="float-card bottom">
+          <div class="fc-label">Tempo de resposta</div>
+          <div class="fc-val">~2 segundos</div>
+          <div class="fc-sub">24h por dia, 7 dias</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- STATS -->
-<div class="stats">
-  <div class="wf">
-    <div class="stats-inner">
-      <div class="stat"><div class="stat-v">6<span>+</span></div><div class="stat-l">Nichos mapeados</div></div>
-      <div class="stat"><div class="stat-v">R$<span>0</span></div><div class="stat-l">Custo inicial de ferramentas</div></div>
-      <div class="stat"><div class="stat-v">30</div><div class="stat-l">Dias pro primeiro cliente</div></div>
-      <div class="stat"><div class="stat-v">8<span>×</span></div><div class="stat-l">Margem média por cliente</div></div>
+<!-- ═══════════ TOOLS SCROLLER ═══════════ -->
+<div class="tools-band">
+  <div class="tools-track" id="toolsTrack">
+    <!-- Set 1 -->
+    <div class="tool-item"><div class="tool-icon">🔄</div><span class="tool-name">n8n</span></div>
+    <div class="tool-item"><div class="tool-icon">💬</div><span class="tool-name">Z-API</span></div>
+    <div class="tool-item"><div class="tool-icon">🤖</div><span class="tool-name">GPT-4o</span></div>
+    <div class="tool-item"><div class="tool-icon">📊</div><span class="tool-name">Google Sheets</span></div>
+    <div class="tool-item"><div class="tool-icon">📅</div><span class="tool-name">Google Calendar</span></div>
+    <div class="tool-item"><div class="tool-icon">🔗</div><span class="tool-name">Make</span></div>
+    <div class="tool-item"><div class="tool-icon">🧩</div><span class="tool-name">Typebot</span></div>
+    <div class="tool-item"><div class="tool-icon">✨</div><span class="tool-name">Gemini</span></div>
+    <div class="tool-item"><div class="tool-icon">🗄️</div><span class="tool-name">Airtable</span></div>
+    <div class="tool-item"><div class="tool-icon">📦</div><span class="tool-name">Evolution API</span></div>
+    <div class="tool-item"><div class="tool-icon">🔔</div><span class="tool-name">WhatsApp API</span></div>
+    <div class="tool-item"><div class="tool-icon">🧠</div><span class="tool-name">Claude</span></div>
+    <!-- Set 2 (duplicate for infinite scroll) -->
+    <div class="tool-item"><div class="tool-icon">🔄</div><span class="tool-name">n8n</span></div>
+    <div class="tool-item"><div class="tool-icon">💬</div><span class="tool-name">Z-API</span></div>
+    <div class="tool-item"><div class="tool-icon">🤖</div><span class="tool-name">GPT-4o</span></div>
+    <div class="tool-item"><div class="tool-icon">📊</div><span class="tool-name">Google Sheets</span></div>
+    <div class="tool-item"><div class="tool-icon">📅</div><span class="tool-name">Google Calendar</span></div>
+    <div class="tool-item"><div class="tool-icon">🔗</div><span class="tool-name">Make</span></div>
+    <div class="tool-item"><div class="tool-icon">🧩</div><span class="tool-name">Typebot</span></div>
+    <div class="tool-item"><div class="tool-icon">✨</div><span class="tool-name">Gemini</span></div>
+    <div class="tool-item"><div class="tool-icon">🗄️</div><span class="tool-name">Airtable</span></div>
+    <div class="tool-item"><div class="tool-icon">📦</div><span class="tool-name">Evolution API</span></div>
+    <div class="tool-item"><div class="tool-icon">🔔</div><span class="tool-name">WhatsApp API</span></div>
+    <div class="tool-item"><div class="tool-icon">🧠</div><span class="tool-name">Claude</span></div>
+  </div>
+</div>
+
+<!-- ═══════════ STATS ═══════════ -->
+<div class="stats-sec">
+  <div class="wl">
+    <div class="stats-grid">
+      <div class="stat-item"><div class="stat-num">6<span>+</span></div><div class="stat-label">Nichos com demanda<br>comprovada no Brasil</div></div>
+      <div class="stat-item"><div class="stat-num">R$<span>0</span></div><div class="stat-label">Custo inicial<br>de ferramentas</div></div>
+      <div class="stat-item"><div class="stat-num">30</div><div class="stat-label">Dias até o<br>primeiro cliente</div></div>
+      <div class="stat-item"><div class="stat-num">87<span>%</span></div><div class="stat-label">Margem média<br>por projeto</div></div>
     </div>
   </div>
 </div>
 
-<!-- HOOK -->
-<section class="sec">
+<!-- ═══════════ HOOK + MECANISMO ═══════════ -->
+<section class="sec" id="mecanismo">
   <div class="w">
-    <div class="eyebrow"><span>// O problema real</span></div>
-    <h2 class="sh">O que <em>ninguém</em><br>está te contando</h2>
-    <div class="hook-rows">
-      <div class="hook-row"><span class="hook-n">01</span>Você já ouviu falar em IA.</div>
-      <div class="hook-row"><span class="hook-n">02</span>Você já usou o ChatGPT.</div>
-      <div class="hook-row"><span class="hook-n">03</span>Já fez fotinha do Gemini.</div>
-      <div class="hook-row final"><span class="hook-n">→</span><span>Mas ninguém te conta <span class="accent">como fazer dinheiro de verdade com IA.</span></span></div>
+
+    <!-- HOOK -->
+    <div class="hook-list">
+      <div class="hook-item"><span class="hook-n">01</span><span class="hook-text">Você já ouviu falar em IA.</span></div>
+      <div class="hook-item"><span class="hook-n">02</span><span class="hook-text">Você já usou o ChatGPT.</span></div>
+      <div class="hook-item"><span class="hook-n">03</span><span class="hook-text">Já fez fotinha do Gemini.</span></div>
+      <div class="hook-item final"><span class="hook-n">→</span><span class="hook-text">Mas ninguém te conta como fazer <em>dinheiro de verdade</em> com IA.</span></div>
     </div>
-    <p class="bp">O dinheiro não está em criar conteúdo com IA. Não está em usar o ChatGPT para escrever e-mail. Está em construir <strong>estruturas de IA que trabalham por empresas inteiras enquanto o dono dorme</strong> — e cobrar por isso mensalmente.</p>
-    <div class="callout red">
-      <div class="cl">▸ A janela aberta agora</div>
-      <p>Em 2005, quem aprendeu HTML ficou rico. Em 2012, quem entrou no Facebook Ads antes de todo mundo virou referência. Em 2018, quem cresceu no Instagram orgânico construiu audiências milionárias. <strong>Agentes de IA para PMEs é 2026.</strong> Quem entrar agora pega o mercado. Quem esperar vai disputar preço com cinquenta pessoas fazendo a mesma coisa.</p>
+
+    <!-- NARRATIVE BRIDGE -->
+    <div style="margin:48px 0 40px;padding:32px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+      <p style="font-family:'Playfair Display',serif;font-size:clamp(1.15rem,2.5vw,1.6rem);font-weight:400;line-height:1.6;color:var(--ink2);max-width:620px;">
+        O dinheiro não está em <em style="color:var(--muted);font-style:italic;">usar</em> IA.<br>
+        Está em <strong>entregar IA como serviço</strong> para empresas que precisam — e não sabem montar.
+      </p>
+      <p style="font-size:14px;color:var(--text);line-height:1.75;max-width:560px;margin-top:16px;">
+        Clínicas, imobiliárias, escritórios — todos com o mesmo problema: perdem clientes por falta de atendimento rápido. A solução existe, custa pouco e funciona 24h. O que falta é alguém que saiba montar e vender.
+      </p>
+    </div>
+
+    <!-- EFEITO INTÉRPRETE — narrativa limpa -->
+    <div class="eyebrow" style="margin-bottom:20px;"><span>O Efeito Intérprete</span></div>
+    <h2 class="sh" style="margin-bottom:28px;">Você não precisa saber programar.<br><em>Precisa saber traduzir.</em></h2>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:32px;">
+      <div style="padding:24px;background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--red);">
+        <div style="font-size:1.8rem;margin-bottom:12px;">🏥</div>
+        <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px;">O empresário tem a dor</div>
+        <div style="font-size:13px;color:var(--text);line-height:1.6;">"Perco clientes toda noite porque não consigo responder fora do horário."</div>
+      </div>
+      <div style="padding:24px;background:var(--ink);border:1px solid var(--border-dark);border-top:3px solid var(--red);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+        <div style="font-size:1.8rem;margin-bottom:12px;">🔄</div>
+        <div style="font-size:14px;font-weight:600;color:#fff;margin-bottom:8px;">Você faz a ponte</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Traduz a dor dele em uma estrutura de IA que resolve — usando ferramentas que já existem.</div>
+      </div>
+      <div style="padding:24px;background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--green);">
+        <div style="font-size:1.8rem;margin-bottom:12px;">💰</div>
+        <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px;">Ele paga todo mês</div>
+        <div style="font-size:13px;color:var(--text);line-height:1.6;">O agente trabalha 24h por dia. O cliente não troca porque depende. Você recebe recorrente.</div>
+      </div>
+    </div>
+
+    <div class="mech-quote">
+      <p>"O médico não fabricou o bisturi. Ele aprendeu a usá-lo. O Arquiteto de Agentes não cria a IA — ele sabe aplicá-la onde gera dinheiro."</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════ WORKFLOW SHOWCASE ═══════════ -->
+<section class="wf-showcase">
+  <div class="wl">
+    <div class="eyebrow"><span>Veja na prática</span></div>
+    <h2 class="sh">As estruturas que<br><em>você vai entregar.</em></h2>
+    <p class="lead" style="max-width:480px;">Fluxos reais construídos no n8n. Você importa o JSON, configura os dados do cliente e entrega.</p>
+
+    <div class="wf-showcase-grid">
+      <!-- LEFT — WORKFLOW PANELS -->
+      <div>
+        <div class="wf-tabs">
+          <button class="wf-tab active" onclick="showWf(0,this)">Clínica Estética</button>
+          <button class="wf-tab" onclick="showWf(1,this)">Imobiliária</button>
+          <button class="wf-tab" onclick="showWf(2,this)">Odontologia</button>
+        </div>
+
+        <!-- WF 0 — Clínica Estética -->
+        <div class="wf-panel" id="wf0">
+          <div class="wf-panel-header">
+            <div class="wf-panel-dots">
+              <div class="wf-panel-dot" style="background:#ff5f57"></div>
+              <div class="wf-panel-dot" style="background:#febc2e"></div>
+              <div class="wf-panel-dot" style="background:#28c840"></div>
+            </div>
+            <span class="wf-panel-title">agente-clinica-estetica.json</span>
+            <span class="wf-panel-run">● Ativo</span>
+          </div>
+          <!-- N8N CANVAS SVG -->
+          <div style="background:#1a1a2e;padding:20px;overflow-x:auto;">
+            <svg viewBox="0 0 680 260" width="100%" style="min-width:540px;display:block;" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',monospace">
+              <defs>
+                <marker id="arr0" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L7,3 z" fill="#4a4a6a"/>
+                </marker>
+                <filter id="glow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              </defs>
+              <!-- Grid dots -->
+              <pattern id="grid0" width="24" height="24" patternUnits="userSpaceOnUse">
+                <circle cx="1" cy="1" r="0.8" fill="rgba(255,255,255,0.06)"/>
+              </pattern>
+              <rect width="680" height="260" fill="url(#grid0)"/>
+
+              <!-- CONNECTORS -->
+              <line x1="108" y1="80" x2="140" y2="80" stroke="#4a4a6a" stroke-width="2" marker-end="url(#arr0)"/>
+              <line x1="248" y1="80" x2="280" y2="80" stroke="#4a4a6a" stroke-width="2" marker-end="url(#arr0)"/>
+              <line x1="388" y1="80" x2="420" y2="80" stroke="#4a4a6a" stroke-width="2" marker-end="url(#arr0)"/>
+              <!-- Split from AI Agent down -->
+              <line x1="530" y1="100" x2="530" y2="140" stroke="#4a4a6a" stroke-width="2"/>
+              <line x1="530" y1="140" x2="420" y2="140" stroke="#4a4a6a" stroke-width="2" marker-end="url(#arr0)"/>
+              <line x1="530" y1="140" x2="530" y2="180" stroke="#4a4a6a" stroke-width="2"/>
+              <line x1="530" y1="180" x2="420" y2="180" stroke="#4a4a6a" stroke-width="2" marker-end="url(#arr0)"/>
+              <line x1="530" y1="180" x2="530" y2="220" stroke="#4a4a6a" stroke-width="2"/>
+              <line x1="530" y1="220" x2="420" y2="220" stroke="#4a4a6a" stroke-width="2" marker-end="url(#arr0)"/>
+
+              <!-- NODE 1: Webhook -->
+              <g filter="url(#glow)">
+                <rect x="8" y="52" width="100" height="56" rx="8" fill="#2d2d45" stroke="#e03a20" stroke-width="1.5"/>
+                <rect x="8" y="52" width="100" height="16" rx="8" fill="#e03a20"/>
+                <rect x="8" y="60" width="100" height="8" fill="#e03a20"/>
+                <text x="58" y="63" text-anchor="middle" fill="white" font-size="8" font-weight="600">WEBHOOK</text>
+                <text x="58" y="82" text-anchor="middle" font-size="18">📱</text>
+                <text x="58" y="99" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7.5">WhatsApp</text>
+                <text x="58" y="109" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6.5">Z-API Trigger</text>
+              </g>
+
+              <!-- NODE 2: IF Filter -->
+              <g>
+                <rect x="140" y="52" width="108" height="56" rx="8" fill="#2d2d45" stroke="#f59e0b" stroke-width="1.5"/>
+                <rect x="140" y="52" width="108" height="16" rx="8" fill="#f59e0b"/>
+                <rect x="140" y="60" width="108" height="8" fill="#f59e0b"/>
+                <text x="194" y="63" text-anchor="middle" fill="white" font-size="8" font-weight="600">IF</text>
+                <text x="194" y="82" text-anchor="middle" font-size="18">🔀</text>
+                <text x="194" y="99" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7.5">Filtrar Msg</text>
+                <text x="194" y="109" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6.5">fromMe = false</text>
+              </g>
+
+              <!-- NODE 3: Google Sheets Read -->
+              <g>
+                <rect x="280" y="52" width="108" height="56" rx="8" fill="#2d2d45" stroke="#22c55e" stroke-width="1.5"/>
+                <rect x="280" y="52" width="108" height="16" rx="8" fill="#22c55e"/>
+                <rect x="280" y="60" width="108" height="8" fill="#22c55e"/>
+                <text x="334" y="63" text-anchor="middle" fill="white" font-size="8" font-weight="600">GOOGLE SHEETS</text>
+                <text x="334" y="82" text-anchor="middle" font-size="18">📊</text>
+                <text x="334" y="99" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7.5">Buscar histórico</text>
+                <text x="334" y="109" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6.5">Read Row</text>
+              </g>
+
+              <!-- NODE 4: AI Agent -->
+              <g filter="url(#glow)">
+                <rect x="420" y="42" width="120" height="68" rx="8" fill="#2d2d45" stroke="#8b5cf6" stroke-width="2"/>
+                <rect x="420" y="42" width="120" height="18" rx="8" fill="#8b5cf6"/>
+                <rect x="420" y="52" width="120" height="8" fill="#8b5cf6"/>
+                <text x="480" y="55" text-anchor="middle" fill="white" font-size="8" font-weight="700">AI AGENT</text>
+                <text x="480" y="78" text-anchor="middle" font-size="20">🤖</text>
+                <text x="480" y="97" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="8" font-weight="600">Sofia</text>
+                <text x="480" y="107" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6.5">GPT-4o-mini</text>
+              </g>
+
+              <!-- NODE 5: Google Calendar -->
+              <g>
+                <rect x="280" y="118" width="136" height="44" rx="8" fill="#2d2d45" stroke="#3b82f6" stroke-width="1.5"/>
+                <rect x="280" y="118" width="136" height="14" rx="8" fill="#3b82f6"/>
+                <rect x="280" y="126" width="136" height="6" fill="#3b82f6"/>
+                <text x="348" y="129" text-anchor="middle" fill="white" font-size="7.5" font-weight="600">GOOGLE CALENDAR</text>
+                <text x="300" y="148" text-anchor="middle" font-size="14">📅</text>
+                <text x="360" y="144" fill="rgba(255,255,255,0.7)" font-size="7.5">Verificar agenda</text>
+                <text x="360" y="154" fill="rgba(255,255,255,0.4)" font-size="6.5">Get Free Slots</text>
+              </g>
+
+              <!-- NODE 6: Google Sheets Write -->
+              <g>
+                <rect x="280" y="170" width="136" height="44" rx="8" fill="#2d2d45" stroke="#22c55e" stroke-width="1.5"/>
+                <rect x="280" y="170" width="136" height="14" rx="8" fill="#22c55e"/>
+                <rect x="280" y="178" width="136" height="6" fill="#22c55e"/>
+                <text x="348" y="181" text-anchor="middle" fill="white" font-size="7.5" font-weight="600">GOOGLE SHEETS</text>
+                <text x="300" y="200" text-anchor="middle" font-size="14">💾</text>
+                <text x="360" y="196" fill="rgba(255,255,255,0.7)" font-size="7.5">Salvar histórico</text>
+                <text x="360" y="206" fill="rgba(255,255,255,0.4)" font-size="6.5">Upsert Row</text>
+              </g>
+
+              <!-- NODE 7: Send WhatsApp -->
+              <g filter="url(#glow)">
+                <rect x="280" y="210" width="136" height="44" rx="8" fill="#2d2d45" stroke="#e03a20" stroke-width="1.5"/>
+                <rect x="280" y="210" width="136" height="14" rx="8" fill="#e03a20"/>
+                <rect x="280" y="218" width="136" height="6" fill="#e03a20"/>
+                <text x="348" y="221" text-anchor="middle" fill="white" font-size="7.5" font-weight="600">HTTP REQUEST</text>
+                <text x="300" y="240" text-anchor="middle" font-size="14">✉️</text>
+                <text x="360" y="236" fill="rgba(255,255,255,0.7)" font-size="7.5">Enviar resposta</text>
+                <text x="360" y="246" fill="rgba(255,255,255,0.4)" font-size="6.5">Z-API send-text</text>
+              </g>
+
+              <!-- Execution indicator -->
+              <circle cx="480" cy="42" r="5" fill="#28c840" opacity="0.9">
+                <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
+          </div>
+          <div class="wf-stats-row">
+            <div class="wf-stat"><span class="wf-stat-val">24h</span><span class="wf-stat-label">Disponível</span></div>
+            <div class="wf-stat"><span class="wf-stat-val">~2s</span><span class="wf-stat-label">Resposta</span></div>
+            <div class="wf-stat"><span class="wf-stat-val">8–12h</span><span class="wf-stat-label">Setup</span></div>
+          </div>
+        </div>
+
+        <!-- WF 1 — Imobiliária -->
+        <div class="wf-panel" id="wf1" style="display:none;">
+          <div class="wf-panel-header">
+            <div class="wf-panel-dots">
+              <div class="wf-panel-dot" style="background:#ff5f57"></div>
+              <div class="wf-panel-dot" style="background:#febc2e"></div>
+              <div class="wf-panel-dot" style="background:#28c840"></div>
+            </div>
+            <span class="wf-panel-title">qualificacao-leads-imobiliaria.json</span>
+            <span class="wf-panel-run">● Ativo</span>
+          </div>
+          <div style="background:#1a1a2e;padding:20px;overflow-x:auto;">
+            <svg viewBox="0 0 680 260" width="100%" style="min-width:540px;display:block;" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',monospace">
+              <defs>
+                <marker id="arr1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L7,3 z" fill="#4a4a6a"/>
+                </marker>
+                <filter id="glow1"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              </defs>
+              <rect width="680" height="260" fill="url(#grid0)"/>
+
+              <!-- Connectors -->
+              <line x1="108" y1="78" x2="140" y2="78" stroke="#4a4a6a" stroke-width="2" marker-end="url(#arr1)"/>
+              <line x1="248" y1="78" x2="280" y2="78" stroke="#4a4a6a" stroke-width="2" marker-end="url(#arr1)"/>
+              <line x1="388" y1="78" x2="420" y2="78" stroke="#4a4a6a" stroke-width="2" marker-end="url(#arr1)"/>
+              <!-- IF splits -->
+              <line x1="530" y1="98" x2="530" y2="138" stroke="#4a4a6a" stroke-width="2"/>
+              <line x1="530" y1="138" x2="560" y2="138" stroke="#22c55e" stroke-width="2" marker-end="url(#arr1)"/>
+              <text x="532" y="132" fill="#22c55e" font-size="7">true</text>
+              <line x1="420" y1="78" x2="420" y2="180" stroke="#4a4a6a" stroke-width="1" stroke-dasharray="4,3"/>
+              <line x1="420" y1="180" x2="560" y2="180" stroke="#ef4444" stroke-width="2" marker-end="url(#arr1)"/>
+              <text x="435" y="176" fill="#ef4444" font-size="7">false</text>
+
+              <!-- NODE 1: Webhook -->
+              <g>
+                <rect x="8" y="50" width="100" height="56" rx="8" fill="#2d2d45" stroke="#e03a20" stroke-width="1.5"/>
+                <rect x="8" y="50" width="100" height="16" rx="8" fill="#e03a20"/>
+                <rect x="8" y="58" width="100" height="8" fill="#e03a20"/>
+                <text x="58" y="62" text-anchor="middle" fill="white" font-size="8" font-weight="600">WEBHOOK</text>
+                <text x="58" y="80" text-anchor="middle" font-size="18">🌐</text>
+                <text x="58" y="97" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7.5">Lead do portal</text>
+                <text x="58" y="107" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6.5">OLX / ZAP Imóveis</text>
+              </g>
+
+              <!-- NODE 2: AI Score -->
+              <g filter="url(#glow1)">
+                <rect x="140" y="50" width="108" height="56" rx="8" fill="#2d2d45" stroke="#8b5cf6" stroke-width="2"/>
+                <rect x="140" y="50" width="108" height="16" rx="8" fill="#8b5cf6"/>
+                <rect x="140" y="58" width="108" height="8" fill="#8b5cf6"/>
+                <text x="194" y="62" text-anchor="middle" fill="white" font-size="8" font-weight="600">AI AGENT</text>
+                <text x="194" y="80" text-anchor="middle" font-size="18">🤖</text>
+                <text x="194" y="97" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7.5">Qualificar lead</text>
+                <text x="194" y="107" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6.5">GPT-4o Score 0–10</text>
+              </g>
+
+              <!-- NODE 3: Code -->
+              <g>
+                <rect x="280" y="50" width="108" height="56" rx="8" fill="#2d2d45" stroke="#64748b" stroke-width="1.5"/>
+                <rect x="280" y="50" width="108" height="16" rx="8" fill="#64748b"/>
+                <rect x="280" y="58" width="108" height="8" fill="#64748b"/>
+                <text x="334" y="62" text-anchor="middle" fill="white" font-size="8" font-weight="600">CODE</text>
+                <text x="334" y="80" text-anchor="middle" font-size="18">⚙️</text>
+                <text x="334" y="97" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7.5">Processar score</text>
+                <text x="334" y="107" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6.5">Parse JSON</text>
+              </g>
+
+              <!-- NODE 4: IF -->
+              <g>
+                <rect x="420" y="50" width="110" height="56" rx="8" fill="#2d2d45" stroke="#f59e0b" stroke-width="1.5"/>
+                <rect x="420" y="50" width="110" height="16" rx="8" fill="#f59e0b"/>
+                <rect x="420" y="58" width="110" height="8" fill="#f59e0b"/>
+                <text x="475" y="62" text-anchor="middle" fill="white" font-size="8" font-weight="600">IF</text>
+                <text x="475" y="80" text-anchor="middle" font-size="18">⚡</text>
+                <text x="475" y="97" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7.5">Score ≥ 7?</text>
+                <text x="475" y="107" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6.5">Lead quente</text>
+              </g>
+
+              <!-- NODE 5: WhatsApp (true) -->
+              <g filter="url(#glow1)">
+                <rect x="560" y="112" width="110" height="48" rx="8" fill="#2d2d45" stroke="#22c55e" stroke-width="1.5"/>
+                <rect x="560" y="112" width="110" height="14" rx="8" fill="#22c55e"/>
+                <rect x="560" y="120" width="110" height="6" fill="#22c55e"/>
+                <text x="615" y="123" text-anchor="middle" fill="white" font-size="7.5" font-weight="600">HTTP REQUEST</text>
+                <text x="585" y="143" text-anchor="middle" font-size="13">📱</text>
+                <text x="628" y="139" fill="rgba(255,255,255,0.7)" font-size="7.5">Z-API Resposta</text>
+                <text x="628" y="149" fill="rgba(255,255,255,0.4)" font-size="6.5">Atendimento imediato</text>
+                <circle cx="665" cy="112" r="4" fill="#22c55e" opacity="0.8">
+                  <animate attributeName="opacity" values="0.8;0.2;0.8" dur="1.5s" repeatCount="indefinite"/>
+                </circle>
+              </g>
+
+              <!-- NODE 6: Notify (false) -->
+              <g>
+                <rect x="560" y="162" width="110" height="48" rx="8" fill="#2d2d45" stroke="#64748b" stroke-width="1.5"/>
+                <rect x="560" y="162" width="110" height="14" rx="8" fill="#64748b"/>
+                <rect x="560" y="170" width="110" height="6" fill="#64748b"/>
+                <text x="615" y="173" text-anchor="middle" fill="white" font-size="7.5" font-weight="600">SET</text>
+                <text x="585" y="193" text-anchor="middle" font-size="13">🏷️</text>
+                <text x="628" y="189" fill="rgba(255,255,255,0.7)" font-size="7.5">Nurturing</text>
+                <text x="628" y="199" fill="rgba(255,255,255,0.4)" font-size="6.5">Lead frio / Aguardar</text>
+              </g>
+
+              <!-- Google Sheets save -->
+              <line x1="615" y1="160" x2="615" y2="220" stroke="#4a4a6a" stroke-width="1.5" marker-end="url(#arr1)"/>
+              <g>
+                <rect x="560" y="220" width="110" height="36" rx="8" fill="#2d2d45" stroke="#22c55e" stroke-width="1.5"/>
+                <text x="585" y="242" text-anchor="middle" font-size="13">📊</text>
+                <text x="628" y="238" fill="rgba(255,255,255,0.7)" font-size="7.5">Registrar CRM</text>
+                <text x="628" y="248" fill="rgba(255,255,255,0.4)" font-size="6.5">Google Sheets</text>
+              </g>
+            </svg>
+          </div>
+          <div class="wf-stats-row">
+            <div class="wf-stat"><span class="wf-stat-val">3min</span><span class="wf-stat-label">1ª Resposta</span></div>
+            <div class="wf-stat"><span class="wf-stat-val">Auto</span><span class="wf-stat-label">Qualificação</span></div>
+            <div class="wf-stat"><span class="wf-stat-val">12–18h</span><span class="wf-stat-label">Setup</span></div>
+          </div>
+        </div>
+
+        <!-- WF 2 — Odontologia -->
+        <div class="wf-panel" id="wf2" style="display:none;">
+          <div class="wf-panel-header">
+            <div class="wf-panel-dots">
+              <div class="wf-panel-dot" style="background:#ff5f57"></div>
+              <div class="wf-panel-dot" style="background:#febc2e"></div>
+              <div class="wf-panel-dot" style="background:#28c840"></div>
+            </div>
+            <span class="wf-panel-title">recall-pacientes-odonto.json</span>
+            <span class="wf-panel-run">● Ativo</span>
+          </div>
+          <div style="background:#1a1a2e;padding:20px;overflow-x:auto;">
+            <svg viewBox="0 0 680 240" width="100%" style="min-width:540px;display:block;" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono',monospace">
+              <defs>
+                <marker id="arr2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L7,3 z" fill="#4a4a6a"/>
+                </marker>
+                <filter id="glow2"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              </defs>
+              <rect width="680" height="240" fill="url(#grid0)"/>
+
+              <!-- Connectors row 1 -->
+              <line x1="108" y1="75" x2="140" y2="75" stroke="#4a4a6a" stroke-width="2" marker-end="url(#arr2)"/>
+              <line x1="248" y1="75" x2="280" y2="75" stroke="#4a4a6a" stroke-width="2" marker-end="url(#arr2)"/>
+              <line x1="388" y1="75" x2="420" y2="75" stroke="#4a4a6a" stroke-width="2" marker-end="url(#arr2)"/>
+              <line x1="528" y1="75" x2="560" y2="75" stroke="#4a4a6a" stroke-width="2" marker-end="url(#arr2)"/>
+              <!-- Down splits from last node -->
+              <line x1="615" y1="105" x2="615" y2="140" stroke="#4a4a6a" stroke-width="2"/>
+              <line x1="615" y1="140" x2="560" y2="140" stroke="#4a4a6a" stroke-width="2" marker-end="url(#arr2)"/>
+              <line x1="560" y1="140" x2="420" y2="140" stroke="#4a4a6a" stroke-width="2" marker-end="url(#arr2)"/>
+
+              <!-- NODE 1: Cron -->
+              <g>
+                <rect x="8" y="47" width="100" height="56" rx="8" fill="#2d2d45" stroke="#f59e0b" stroke-width="1.5"/>
+                <rect x="8" y="47" width="100" height="16" rx="8" fill="#f59e0b"/>
+                <rect x="8" y="55" width="100" height="8" fill="#f59e0b"/>
+                <text x="58" y="59" text-anchor="middle" fill="white" font-size="8" font-weight="600">SCHEDULE</text>
+                <text x="58" y="77" text-anchor="middle" font-size="18">⏰</text>
+                <text x="58" y="94" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7.5">Cron diário</text>
+                <text x="58" y="104" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6.5">09h00 todo dia</text>
+              </g>
+
+              <!-- NODE 2: Sheets read -->
+              <g>
+                <rect x="140" y="47" width="108" height="56" rx="8" fill="#2d2d45" stroke="#22c55e" stroke-width="1.5"/>
+                <rect x="140" y="47" width="108" height="16" rx="8" fill="#22c55e"/>
+                <rect x="140" y="55" width="108" height="8" fill="#22c55e"/>
+                <text x="194" y="59" text-anchor="middle" fill="white" font-size="8" font-weight="600">GOOGLE SHEETS</text>
+                <text x="194" y="77" text-anchor="middle" font-size="18">📊</text>
+                <text x="194" y="94" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7.5">Listar inativos</text>
+                <text x="194" y="104" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6.5">Filtro: 60+ dias</text>
+              </g>
+
+              <!-- NODE 3: Split In Batches -->
+              <g>
+                <rect x="280" y="47" width="108" height="56" rx="8" fill="#2d2d45" stroke="#64748b" stroke-width="1.5"/>
+                <rect x="280" y="47" width="108" height="16" rx="8" fill="#64748b"/>
+                <rect x="280" y="55" width="108" height="8" fill="#64748b"/>
+                <text x="334" y="59" text-anchor="middle" fill="white" font-size="8" font-weight="600">SPLIT IN BATCHES</text>
+                <text x="334" y="77" text-anchor="middle" font-size="18">📦</text>
+                <text x="334" y="94" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7.5">Processar lote</text>
+                <text x="334" y="104" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6.5">10 por execução</text>
+              </g>
+
+              <!-- NODE 4: AI Agent -->
+              <g filter="url(#glow2)">
+                <rect x="420" y="47" width="108" height="56" rx="8" fill="#2d2d45" stroke="#8b5cf6" stroke-width="2"/>
+                <rect x="420" y="47" width="108" height="16" rx="8" fill="#8b5cf6"/>
+                <rect x="420" y="55" width="108" height="8" fill="#8b5cf6"/>
+                <text x="474" y="59" text-anchor="middle" fill="white" font-size="8" font-weight="600">AI AGENT</text>
+                <text x="474" y="77" text-anchor="middle" font-size="18">🤖</text>
+                <text x="474" y="94" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7.5">Personalizar msg</text>
+                <text x="474" y="104" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6.5">GPT-4o recall</text>
+              </g>
+
+              <!-- NODE 5: HTTP / Z-API -->
+              <g filter="url(#glow2)">
+                <rect x="560" y="47" width="110" height="56" rx="8" fill="#2d2d45" stroke="#e03a20" stroke-width="2"/>
+                <rect x="560" y="47" width="110" height="16" rx="8" fill="#e03a20"/>
+                <rect x="560" y="55" width="110" height="8" fill="#e03a20"/>
+                <text x="615" y="59" text-anchor="middle" fill="white" font-size="8" font-weight="600">HTTP REQUEST</text>
+                <text x="615" y="77" text-anchor="middle" font-size="18">💬</text>
+                <text x="615" y="94" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7.5">Enviar WhatsApp</text>
+                <text x="615" y="104" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6.5">Z-API bulk send</text>
+                <circle cx="665" cy="47" r="4" fill="#28c840" opacity="0.8">
+                  <animate attributeName="opacity" values="0.8;0.2;0.8" dur="1.8s" repeatCount="indefinite"/>
+                </circle>
+              </g>
+
+              <!-- NODE 6: Google Calendar (response) -->
+              <g>
+                <rect x="420" y="116" width="130" height="40" rx="8" fill="#2d2d45" stroke="#3b82f6" stroke-width="1.5"/>
+                <rect x="420" y="116" width="130" height="12" rx="8" fill="#3b82f6"/>
+                <rect x="420" y="122" width="130" height="6" fill="#3b82f6"/>
+                <text x="485" y="126" text-anchor="middle" fill="white" font-size="7.5" font-weight="600">GOOGLE CALENDAR</text>
+                <text x="445" y="145" text-anchor="middle" font-size="12">📅</text>
+                <text x="500" y="141" fill="rgba(255,255,255,0.7)" font-size="7.5">Criar agendamento</text>
+                <text x="500" y="151" fill="rgba(255,255,255,0.4)" font-size="6.5">Se paciente responder</text>
+              </g>
+
+              <!-- NODE 7: Update Sheets -->
+              <g>
+                <rect x="560" y="116" width="110" height="40" rx="8" fill="#2d2d45" stroke="#22c55e" stroke-width="1.5"/>
+                <rect x="560" y="116" width="110" height="12" rx="8" fill="#22c55e"/>
+                <rect x="560" y="122" width="110" height="6" fill="#22c55e"/>
+                <text x="615" y="126" text-anchor="middle" fill="white" font-size="7.5" font-weight="600">GOOGLE SHEETS</text>
+                <text x="585" y="145" text-anchor="middle" font-size="12">✅</text>
+                <text x="628" y="141" fill="rgba(255,255,255,0.7)" font-size="7.5">Atualizar status</text>
+                <text x="628" y="151" fill="rgba(255,255,255,0.4)" font-size="6.5">reativado = true</text>
+              </g>
+
+              <!-- Stats legend -->
+              <rect x="8" y="190" width="200" height="40" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)"/>
+              <text x="18" y="206" fill="rgba(255,255,255,0.4)" font-size="8">● Legenda de cores</text>
+              <rect x="18" y="212" width="8" height="8" rx="2" fill="#e03a20"/>
+              <text x="30" y="220" fill="rgba(255,255,255,0.4)" font-size="7.5">Trigger</text>
+              <rect x="75" y="212" width="8" height="8" rx="2" fill="#8b5cf6"/>
+              <text x="87" y="220" fill="rgba(255,255,255,0.4)" font-size="7.5">AI</text>
+              <rect x="110" y="212" width="8" height="8" rx="2" fill="#22c55e"/>
+              <text x="122" y="220" fill="rgba(255,255,255,0.4)" font-size="7.5">Dados</text>
+              <rect x="160" y="212" width="8" height="8" rx="2" fill="#f59e0b"/>
+              <text x="172" y="220" fill="rgba(255,255,255,0.4)" font-size="7.5">Lógica</text>
+            </svg>
+          </div>
+          <div class="wf-stats-row">
+            <div class="wf-stat"><span class="wf-stat-val">Auto</span><span class="wf-stat-label">Recall diário</span></div>
+            <div class="wf-stat"><span class="wf-stat-val">~30%</span><span class="wf-stat-label">Reativação</span></div>
+            <div class="wf-stat"><span class="wf-stat-val">10–15h</span><span class="wf-stat-label">Setup</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT — BENEFITS -->
+      <div class="wf-showcase-right">
+        <div class="eyebrow"><span>O que isso significa</span></div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:20px;">Você não precisa<br>criar do zero.</h3>
+        <p class="lead">O Kit Fluxos entrega os JSONs prontos. Você importa no n8n com um clique, configura os dados do cliente e entrega.</p>
+        <div class="wf-benefit-list">
+          <div class="wf-benefit">
+            <div class="wf-benefit-icon">⚡</div>
+            <div class="wf-benefit-body">
+              <h4>De 15 horas para 3 horas</h4>
+              <p>Com o fluxo importado, você só personaliza os dados. A estrutura lógica já está pronta e testada.</p>
+            </div>
+          </div>
+          <div class="wf-benefit">
+            <div class="wf-benefit-icon">🎯</div>
+            <div class="wf-benefit-body">
+              <h4>5 fluxos prontos para 5 nichos</h4>
+              <p>Clínica estética, imobiliária, odontologia, e-commerce e academia. Cada um com suas particularidades resolvidas.</p>
+            </div>
+          </div>
+          <div class="wf-benefit">
+            <div class="wf-benefit-icon">🔄</div>
+            <div class="wf-benefit-body">
+              <h4>Novos fluxos inclusos para sempre</h4>
+              <p>Cada novo nicho que lançarmos, você recebe o fluxo automaticamente. Sem pagar nada a mais.</p>
+            </div>
+          </div>
+          <div class="wf-benefit">
+            <div class="wf-benefit-icon">📈</div>
+            <div class="wf-benefit-body">
+              <h4>Escala com qualidade</h4>
+              <p>O mesmo fluxo funciona para 1 ou 50 clientes do mesmo nicho. Você replica e ajusta em minutos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- MECANISMO -->
-<section class="sec dark" id="mecanismo">
+<!-- ═══════════ MERCADO ═══════════ -->
+<section class="market-sec" id="mercado">
   <div class="w">
-    <div class="eyebrow"><span>// O mecanismo único</span></div>
-    <h2 class="sh">Por que qualquer pessoa<br>consegue fazer isso —<br><em>O Efeito Intérprete.</em></h2>
-    <p class="bp">A pergunta que todo mundo tem: <strong>"Ok, mas por que eu conseguiria fazer isso?"</strong> A resposta não tem nada a ver com tecnologia.</p>
-    <div class="mech-compare">
-      <div class="mc-col">
-        <div class="mc-head">// O que todo mundo pensa que precisa</div>
-        <div class="mc-item"><span class="mc-x">✕</span>Saber programar em Python</div>
-        <div class="mc-item"><span class="mc-x">✕</span>Entender de machine learning</div>
-        <div class="mc-item"><span class="mc-x">✕</span>Ter formação em tecnologia</div>
-        <div class="mc-item"><span class="mc-x">✕</span>Construir modelos de IA do zero</div>
-        <div class="mc-item"><span class="mc-x">✕</span>Anos de experiência técnica</div>
-      </div>
-      <div class="mc-col good">
-        <div class="mc-head">// O que realmente importa</div>
-        <div class="mc-item"><span class="mc-v">✓</span>Saber ler o problema do negócio</div>
-        <div class="mc-item"><span class="mc-v">✓</span>Traduzir a dor em solução técnica</div>
-        <div class="mc-item"><span class="mc-v">✓</span>Conectar ferramentas que já existem</div>
-        <div class="mc-item"><span class="mc-v">✓</span>Apresentar o valor na língua do cliente</div>
-        <div class="mc-item"><span class="mc-v">✓</span>Ser o único na sala que sabe o que existe</div>
-      </div>
-    </div>
-    <div class="mech-quote"><p>"O desenvolvedor constrói a faca. O Arquiteto sabe qual faca usar, quando usar — e cobra por isso."</p></div>
-    <p class="bp">O GPT-4o já existe. O n8n já existe. A Z-API já existe. <strong>O que não existe é a pessoa que sabe combinar essas peças para resolver o problema específico de uma clínica estética em Fortaleza.</strong> Essa pessoa é você.</p>
-    <div class="pillars">
-      <div class="pillar"><div class="pil-n">01</div><div class="pil-t">Lê o negócio</div><div class="pil-d">Identifica onde está a dor que custa dinheiro — não a que o empresário descreve, a real.</div></div>
-      <div class="pillar"><div class="pil-n">02</div><div class="pil-t">Arquiteta a solução</div><div class="pil-d">Combina as ferramentas certas para o problema certo. Sem programar, sem construir do zero.</div></div>
-      <div class="pillar"><div class="pil-n">03</div><div class="pil-t">Vende o resultado</div><div class="pil-d">Nunca vende "agente de IA". Vende "a recepcionista que nunca dorme". O cliente abre a carteira.</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- MERCADO -->
-<section class="sec">
-  <div class="w">
-    <div class="eyebrow"><span>// Quem está comprando</span></div>
-    <h2 class="sh">O mercado que ninguém<br><em>está te mostrando</em></h2>
+    <div class="eyebrow"><span>O mercado</span></div>
+    <h2 class="sh">Quem está comprando<br><em>e quanto paga.</em></h2>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Nicho</th><th>Dor principal</th><th>Ticket mensal</th></tr></thead>
@@ -376,76 +1336,94 @@ footer p{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.17e
       </table>
     </div>
     <div class="callout gold">
-      <div class="cl">▸ O cálculo real</div>
-      <p>Um cliente de R$1.000/mês. Custo de ferramentas: R$100–R$130. <strong>Margem líquida: ~R$870/mês por cliente.</strong> Três clientes: R$2.610/mês recorrentes. A estrutura leva 10–15 horas para montar — depois roda sozinha.</p>
+      <div class="callout-label">O cálculo real</div>
+      <p>Um cliente de R$1.000/mês · Custo de ferramentas: R$130 · <strong>Margem: ~R$870/mês.</strong> Três clientes = R$2.610 recorrentes.</p>
     </div>
   </div>
 </section>
 
-<!-- PARA QUEM É -->
-<section class="sec dark">
+<!-- ═══════════ PARA QUEM É ═══════════ -->
+<section class="fit-sec">
   <div class="w">
-    <div class="eyebrow"><span>// Leia antes de comprar</span></div>
-    <h2 class="sh">Seja <em>honesto</em><br>com você mesmo.</h2>
-    <p class="bp">Não quero o seu dinheiro se isso não é para você.</p>
+    <div class="eyebrow"><span>Seja honesto</span></div>
+    <h2 class="sh">Isso é para <em>você?</em></h2>
     <div class="fit-grid">
       <div class="fit-col yes">
-        <div class="fit-hd y"><div class="fdot y"></div>É pra você se...</div>
+        <div class="fit-head y"><div class="fdot y"></div>É pra você se...</div>
         <div class="fit-item"><strong>Você quer renda recorrente real</strong> — não passiva de mentira. Construída com esforço no primeiro mês.</div>
-        <div class="fit-item"><strong>Você está disposto a aprender do zero.</strong> Sem programação — mas com dedicação de seguir um passo a passo.</div>
-        <div class="fit-item"><strong>Você tem 1–2 horas por dia</strong> nas primeiras semanas. Sem esse tempo, nada funciona.</div>
+        <div class="fit-item"><strong>Você está disposto a aprender do zero.</strong> Sem programação, mas com dedicação de seguir o passo a passo.</div>
+        <div class="fit-item"><strong>Você tem 1–2 horas por dia</strong> nas primeiras semanas para executar.</div>
         <div class="fit-item"><strong>Você prefere vender para empresas</strong> — ticket maior, mais estabilidade, menos drama.</div>
-        <div class="fit-item"><strong>Você age antes de estar pronto.</strong> Quem espera dominar tudo nunca fecha o primeiro cliente.</div>
-        <div class="fit-item"><strong>Você quer entrar cedo</strong> — a vantagem aqui é temporal e você entende isso.</div>
+        <div class="fit-item"><strong>Você age antes de estar 100% pronto.</strong> Quem espera nunca fecha o primeiro cliente.</div>
+        <div class="fit-item"><strong>Você quer entrar cedo</strong> — a vantagem aqui é temporal.</div>
       </div>
       <div class="fit-col no">
-        <div class="fit-hd n"><div class="fdot n"></div>Não é pra você se...</div>
-        <div class="fit-item"><strong>Você quer renda passiva imediata.</strong> Isso não existe. Existe renda recorrente construída com trabalho real.</div>
-        <div class="fit-item"><strong>Você não tem paciência com ferramentas novas.</strong> O material explica tudo — mas você precisa testar e errar.</div>
-        <div class="fit-item"><strong>Você quer resultado na primeira semana.</strong> O ciclo de prospecção → reunião → fechamento leva tempo.</div>
-        <div class="fit-item"><strong>Sua agenda já está lotada.</strong> Sem margem para executar, nenhum conhecimento funciona.</div>
+        <div class="fit-head n"><div class="fdot n"></div>Não é pra você se...</div>
+        <div class="fit-item"><strong>Você quer renda passiva imediata.</strong> Isso não existe. Existe renda recorrente com trabalho real.</div>
+        <div class="fit-item"><strong>Você não tem paciência com ferramentas novas.</strong> O material explica tudo — mas você precisa testar.</div>
+        <div class="fit-item"><strong>Você quer resultado na primeira semana.</strong> O ciclo de prospecção leva tempo.</div>
+        <div class="fit-item"><strong>Sua agenda já está lotada.</strong> Sem margem para executar, nada funciona.</div>
         <div class="fit-item"><strong>Você quer que alguém faça por você.</strong> O material te ensina — não faz por você.</div>
-        <div class="fit-item"><strong>Você já desistiu de três projetos</strong> antes dos 60 dias. Resolva esse padrão primeiro.</div>
+        <div class="fit-item"><strong>Você já desistiu de projetos antes dos 60 dias.</strong> Resolva esse padrão primeiro.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- DEPOIMENTOS -->
-<section class="sec">
+<!-- ═══════════ DEPOIMENTOS ═══════════ -->
+<section class="testi-sec">
   <div class="w">
-    <div class="eyebrow"><span>// Quem já está no mercado</span></div>
-    <h2 class="sh">Resultados de quem<br><em>executou de verdade.</em></h2>
+    <div class="eyebrow"><span>Resultados reais</span></div>
+    <h2 class="sh">Quem já está<br><em>no mercado.</em></h2>
     <div class="testi-grid">
-      <div class="testi"><p class="testi-txt">Montei meu primeiro agente para uma clínica em Fortaleza em 3 dias. Eles pagam R$900 por mês. Nunca tinha tocado em automação antes.</p><div class="testi-auth"><strong>Camila R.</strong> · Fortaleza, CE</div></div>
-      <div class="testi"><p class="testi-txt">Já tentei vender curso, já tentei social media. Isso é diferente — o cliente entende que precisa e paga sem questionar o preço.</p><div class="testi-auth"><strong>Fernanda M.</strong> · São Paulo, SP</div></div>
-      <div class="testi"><p class="testi-txt">Assustei quando vi o ticket que as pessoas cobram. Pensei que era mentira. Não é. Em 6 semanas fechei dois clientes recorrentes.</p><div class="testi-auth"><strong>Juliana T.</strong> · Belo Horizonte, MG</div></div>
-      <div class="testi"><p class="testi-txt">O script de prospecção sozinho vale 10x o que paguei. Mandei para 12 contatos, 3 responderam querendo apresentação.</p><div class="testi-auth"><strong>Beatriz C.</strong> · Recife, PE</div></div>
+      <div class="testi">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">Montei meu primeiro agente para uma clínica em Fortaleza em 3 dias. Eles pagam R$900 por mês. Nunca tinha tocado em automação antes.</p>
+        <div class="testi-author">Camila R.</div>
+        <div class="testi-author-sub">Fortaleza, CE</div>
+        <div class="testi-tag">Cliente ativo</div>
+      </div>
+      <div class="testi">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">Já tentei vender curso, já tentei social media. Isso é diferente — o cliente entende que precisa e paga sem questionar o preço.</p>
+        <div class="testi-author">Fernanda M.</div>
+        <div class="testi-author-sub">São Paulo, SP</div>
+        <div class="testi-tag">2 clientes ativos</div>
+      </div>
+      <div class="testi">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">Assustei quando vi o ticket que as pessoas cobram. Pensei que era mentira. Não é. Em 6 semanas fechei dois clientes recorrentes.</p>
+        <div class="testi-author">Juliana T.</div>
+        <div class="testi-author-sub">Belo Horizonte, MG</div>
+        <div class="testi-tag">R$1.800/mês</div>
+      </div>
+      <div class="testi">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">O script de prospecção sozinho vale 10x o que paguei. Mandei para 12 contatos, 3 responderam querendo apresentação.</p>
+        <div class="testi-author">Beatriz C.</div>
+        <div class="testi-author-sub">Recife, PE</div>
+        <div class="testi-tag">3 reuniões</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- OFERTA -->
+<!-- ═══════════ OFERTA ═══════════ -->
 <section class="offer-sec" id="oferta">
   <div class="w">
-    <div class="eyebrow"><span>// A oferta completa</span></div>
+    <div class="eyebrow"><span>A oferta</span></div>
     <h2 class="sh">Três níveis.<br><em>Você escolhe até onde ir.</em></h2>
-    <p class="bp">Cada nível é opcional. Você começa pelo e-book e decide se quer ir mais fundo.</p>
   </div>
 
-  <!-- PRODUTO BASE -->
-  <div class="w" style="margin-top:28px;">
-    <div class="pblock">
-      <div class="pb-top-line red"></div>
-      <div class="pb-body">
-        <div class="pb-eye">// Nível 01 · Produto principal</div>
+  <!-- BASE -->
+  <div class="w" style="margin-top:32px;">
+    <div class="pblock featured">
+      <div class="pb-accent-bar dark"></div>
+      <div class="pb-inner">
+        <div class="pb-level">// Nível 01 · Produto principal</div>
         <div class="pb-name">E-book Arquiteto de Agentes — Acesso Completo</div>
-        <div class="pb-tag">O mapa completo do mercado de agentes de IA: ferramentas, nichos, precificação, prospecção e como fechar o primeiro cliente. <strong>Sem programação. Sem enrolação.</strong></div>
-        <div class="price-row">
-          <div class="p-old">R$297</div>
-          <div class="p-new">R$97</div>
-          <div class="p-note">PAGAMENTO ÚNICO<br>SEM ASSINATURA<br>ACESSO VITALÍCIO</div>
-        </div>
+        <div class="pb-tag">O mapa completo: ferramentas, nichos, precificação, prospecção e como fechar o primeiro cliente. <strong>Sem programação. Sem enrolação.</strong></div>
+        <div class="price-row"><div class="p-old">R$297</div><div class="p-new">R$97</div><div class="p-note">Pagamento único<br>Acesso vitalício</div></div>
         <div class="inc-grid">
           <div class="inc-item">E-book completo — 40 páginas</div>
           <div class="inc-item">Mapa de 6 nichos pagantes</div>
@@ -457,7 +1435,7 @@ footer p{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.17e
           <div class="inc-item">Garantia de 7 dias</div>
         </div>
         <div class="pb-actions">
-          <a href="#" class="btn-buy">Quero o E-book — R$97 →</a>
+          <a href="#" class="btn-cta">Quero o E-book — R$97 →</a>
           <span class="btn-note">Pix, cartão ou boleto · Acesso em menos de 2 minutos</span>
         </div>
       </div>
@@ -466,57 +1444,51 @@ footer p{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.17e
 
   <!-- UPSELL 1 -->
   <div class="w" style="margin-top:2px;">
-    <div class="pblock gold-border">
-      <div class="pb-top-line gold"></div>
-      <div class="pb-body">
-        <div class="up-badge"><div class="up-dot gld"></div><span class="up-lbl gld">// Upgrade Nível 02 — disponível após a compra</span></div>
-        <div class="pb-name" style="color:var(--gold2);">Kit Fluxos Prontos — Cole, Configure, Entregue.</div>
-        <div class="pb-tag">Você leu o e-book e sabe o que fazer. Agora imagine não precisar construir o fluxo do zero — só <strong>copiar o JSON, colar no n8n, configurar os dados do cliente e entregar.</strong></div>
-        <div class="price-row">
-          <div class="p-new" style="color:var(--gold2);font-size:3.2rem;">R$47</div>
-          <div class="p-note">PAGAMENTO ÚNICO<br>ACESSO VITALÍCIO<br>NOVOS FLUXOS INCLUSOS</div>
-        </div>
+    <div class="pblock gold-b">
+      <div class="pb-accent-bar gold"></div>
+      <div class="pb-inner">
+        <div class="up-badge"><span>// Upgrade Nível 02 — disponível após a compra</span></div>
+        <div class="pb-name" style="color:var(--gold);">Kit Fluxos Prontos — Cole, Configure, Entregue.</div>
+        <div class="pb-tag">Não precisa construir do zero. <strong>Importa o JSON no n8n, configura os dados do cliente e entrega.</strong> De 15 horas para 3 horas por projeto.</div>
+        <div class="price-row"><div class="p-new" style="font-size:3.2rem;color:var(--gold);">R$47</div><div class="p-note">Pagamento único<br>Acesso vitalício<br>Novos fluxos inclusos</div></div>
         <div class="mod-grid">
-          <div class="mod"><h5>Fluxo 01 — Atendimento WhatsApp (Clínica)</h5><p>JSON completo do agente de atendimento 24h. Inclui memória, filtros, prompt e envio de resposta.</p><span class="mod-tag">Pronto para usar</span></div>
-          <div class="mod"><h5>Fluxo 02 — Agendamento + Google Calendar</h5><p>Agente que verifica agenda, agenda consulta e envia confirmação automática.</p><span class="mod-tag">Pronto para usar</span></div>
-          <div class="mod"><h5>Fluxo 03 — Qualificação de Leads (Imobiliária)</h5><p>Recebe lead, qualifica com 5 perguntas, pontua e notifica o corretor só dos leads quentes.</p><span class="mod-tag">Pronto para usar</span></div>
-          <div class="mod"><h5>Fluxo 04 — Recall de Pacientes (Odontologia)</h5><p>Identifica pacientes inativos há 60+ dias e dispara sequência de reativação automática.</p><span class="mod-tag">Pronto para usar</span></div>
-          <div class="mod"><h5>Fluxo 05 — SAC + Pós-venda (E-commerce)</h5><p>Atendimento pós-venda: rastreio, trocas, dúvidas e escalonamento para humano.</p><span class="mod-tag">Pronto para usar</span></div>
-          <div class="mod" style="border:1px solid rgba(200,144,42,.2);background:rgba(200,144,42,.04);"><h5 style="color:var(--gold2);">+ Novos fluxos a cada nicho novo</h5><p>Compradores recebem cada novo fluxo automaticamente — sem pagar nada a mais.</p><span class="mod-tag">Acesso vitalício</span></div>
+          <div class="mod"><h5>Fluxo 01 — Atendimento WhatsApp (Clínica)</h5><p>JSON completo. Inclui memória, filtros, prompt e envio de resposta.</p><span class="mod-badge">Pronto</span></div>
+          <div class="mod"><h5>Fluxo 02 — Agendamento + Google Calendar</h5><p>Verifica agenda, agenda consulta e envia confirmação automática.</p><span class="mod-badge">Pronto</span></div>
+          <div class="mod"><h5>Fluxo 03 — Qualificação de Leads (Imobiliária)</h5><p>Recebe lead, qualifica, pontua e notifica corretor só dos quentes.</p><span class="mod-badge">Pronto</span></div>
+          <div class="mod"><h5>Fluxo 04 — Recall de Pacientes (Odontologia)</h5><p>Identifica inativos há 60+ dias e dispara reativação automática.</p><span class="mod-badge">Pronto</span></div>
+          <div class="mod"><h5>Fluxo 05 — SAC + Pós-venda (E-commerce)</h5><p>Atendimento pós-venda, rastreio, trocas e escalonamento para humano.</p><span class="mod-badge">Pronto</span></div>
+          <div class="mod" style="border:1px solid rgba(212,160,64,0.2);background:rgba(212,160,64,0.03);"><h5 style="color:var(--gold2);">+ Novos fluxos a cada nicho novo</h5><p>Receba automaticamente — sem pagar nada a mais.</p><span class="mod-badge">Vitalício</span></div>
         </div>
-        <div class="cond"><div class="cond-i">↯</div><p>Com o Kit, você reduz de 8–15 horas para <strong>2–4 horas por cliente.</strong> O esqueleto já está pronto — você só personaliza os dados.</p></div>
+        <div class="cond-box"><p>Com o Kit: de 8–15 horas para <strong>2–4 horas por cliente.</strong></p></div>
         <div class="pb-actions">
-          <a href="#" class="btn-buy gld">E-book + Kit Fluxos — R$144 →</a>
-          <a href="#" class="btn-skip">Não, prefiro só o e-book por enquanto</a>
+          <a href="#" class="btn-cta gold">E-book + Kit Fluxos — R$144 →</a>
+          <button class="btn-skip">Não, prefiro só o e-book por enquanto</button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- UPSELL 2 -->
-  <div class="w" style="margin-top:2px;margin-bottom:56px;">
+  <div class="w" style="margin-top:2px;margin-bottom:64px;">
     <div class="pblock">
-      <div class="pb-top-line dim"></div>
-      <div class="pb-body">
-        <div class="up-badge"><div class="up-dot rd"></div><span class="up-lbl dim">// Upgrade Nível 03 — acompanhamento completo</span></div>
+      <div class="pb-accent-bar red"></div>
+      <div class="pb-inner">
+        <div class="pb-level" style="color:var(--red);">// Upgrade Nível 03 — acompanhamento completo</div>
         <div class="pb-name">Mentoria Arquiteto de Agentes — Até Fechar o Primeiro Cliente.</div>
-        <div class="pb-tag">Vídeos com a tela real + sessões ao vivo mensais + suporte direto + acompanhamento <strong>até você fechar o primeiro contrato.</strong></div>
-        <div class="price-row">
-          <div class="p-new" style="font-size:3.2rem;">R$297</div>
-          <div class="p-note">POR MÊS<br>SEM FIDELIDADE MÍNIMA<br>FIQUE ATÉ TER RESULTADO</div>
-        </div>
+        <div class="pb-tag">Vídeos com tela real + sessões ao vivo + suporte direto. <strong>Você fica até fechar o primeiro contrato.</strong></div>
+        <div class="price-row"><div class="p-new" style="font-size:3.2rem;">R$297</div><div class="p-note">Por mês<br>Sem fidelidade mínima<br>Cancele quando quiser</div></div>
         <div class="mod-grid">
-          <div class="mod"><h5>Aulas em vídeo com tela real</h5><p>Cada fase do e-book tem um vídeo. Você assiste, pausa, replica. Só execução.</p></div>
-          <div class="mod"><h5>Sessões ao vivo mensais</h5><p>Tira-dúvidas em grupo uma vez por mês. Você sai com o próximo passo definido.</p></div>
-          <div class="mod"><h5>Revisão da sua estrutura</h5><p>Antes de mostrar pro cliente, manda o fluxo para revisão. Feedback em 48h.</p></div>
-          <div class="mod"><h5>Suporte WhatsApp dias úteis</h5><p>Canal direto para dúvidas técnicas, precificação e segunda opinião.</p></div>
+          <div class="mod"><h5>Aulas em vídeo com tela real</h5><p>Cada fase do e-book tem um vídeo. Você assiste, pausa, replica.</p></div>
+          <div class="mod"><h5>Sessões ao vivo mensais</h5><p>Tira-dúvidas em grupo. Você sai com o próximo passo definido.</p></div>
+          <div class="mod"><h5>Revisão da sua estrutura</h5><p>Manda o fluxo antes de mostrar pro cliente. Feedback em 48h.</p></div>
+          <div class="mod"><h5>Suporte WhatsApp dias úteis</h5><p>Canal direto para dúvidas técnicas e segunda opinião.</p></div>
           <div class="mod"><h5>Scripts e templates mensais</h5><p>Novos scripts de prospecção e modelos de proposta todo mês.</p></div>
-          <div class="mod"><h5>Grupo privado de arquitetos</h5><p>Troca de experiências, indicações, dúvidas e casos reais.</p></div>
+          <div class="mod"><h5>Grupo privado de arquitetos</h5><p>Troca de experiências, indicações e casos reais.</p></div>
         </div>
-        <div class="cond"><div class="cond-i">↻</div><p>Cancele quando quiser. A proposta é simples: <strong>fique até fechar o primeiro cliente.</strong> Um único contrato de R$800/mês já paga a mentoria com sobra.</p></div>
+        <div class="cond-box" style="border-left-color:var(--red);"><p>Cancele quando quiser. <strong>Um único contrato de R$800/mês já paga a mentoria com sobra.</strong></p></div>
         <div class="pb-actions">
-          <a href="#" class="btn-buy">E-book + Kit + Mentoria — R$97 + R$47 + R$297/mês →</a>
-          <a href="#" class="btn-skip">Não, vou começar só com o e-book</a>
+          <a href="#" class="btn-cta">E-book + Kit + Mentoria — R$97 + R$47 + R$297/mês →</a>
+          <button class="btn-skip">Não, vou começar só com o e-book</button>
         </div>
       </div>
     </div>
@@ -524,10 +1496,10 @@ footer p{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.17e
 </section>
 
 <!-- GUARANTEE -->
-<div class="w" style="padding-bottom:56px;">
+<div class="w" style="padding-bottom:64px;">
   <div class="guar">
-    <div class="guar-n">7</div>
-    <div class="guar-b">
+    <div class="guar-num">7</div>
+    <div class="guar-body">
       <h4>Garantia incondicional de 7 dias</h4>
       <p>Se você acessar o material e sentir que não era o que esperava — por qualquer motivo — devolvo 100% do valor. Sem perguntas, sem burocracia. O risco é completamente meu.</p>
     </div>
@@ -537,13 +1509,12 @@ footer p{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.17e
 <!-- URGÊNCIA FINAL -->
 <section class="uf">
   <div class="w">
-    <div class="eyebrow"><span>// Antes de fechar essa página</span></div>
-    <div class="uf-stmt">Este mercado<br>vai <em>saturar.</em><br>Não sei quando.</div>
-    <p class="bp">Pode ser em 8 meses. Pode ser em 2 anos. Mas vai. <strong>Quando isso acontecer, quem já tiver clientes recorrentes vai continuar lucrando. Quem entrar depois vai disputar preço com cinquenta pessoas fazendo a mesma coisa.</strong></p>
-    <p class="bp">O risco de não tentar é infinitamente maior do que o risco de R$97.</p>
-    <div style="display:flex;flex-direction:column;gap:9px;align-items:flex-start;margin-top:32px;">
-      <a href="#oferta" class="btn-buy">Garantir meu acesso agora — R$97 →</a>
-      <span class="btn-note">Pagamento único · Garantia 7 dias · Acesso em 2 minutos</span>
+    <div class="eyebrow light"><span>Antes de fechar essa página</span></div>
+    <div class="uf-h">Este mercado<br>vai <em>saturar.</em><br>Não sei quando.</div>
+    <p class="uf-sub"><strong>Quem já tiver clientes recorrentes vai continuar lucrando.</strong> Quem entrar depois vai disputar preço com cinquenta pessoas fazendo a mesma coisa.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start;">
+      <a href="#oferta" class="btn-cta">Garantir meu acesso agora — R$97 →</a>
+      <span class="btn-note" style="color:rgba(255,255,255,0.3);">Pagamento único · Garantia 7 dias · Acesso em 2 minutos</span>
     </div>
   </div>
 </section>
@@ -551,40 +1522,68 @@ footer p{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:.17e
 <!-- FAQ -->
 <section class="faq-sec">
   <div class="w">
-    <div class="eyebrow"><span>// Dúvidas frequentes</span></div>
+    <div class="eyebrow"><span>Dúvidas frequentes</span></div>
     <h2 class="sh">Perguntas que<br><em>você provavelmente tem.</em></h2>
     <div class="faq-item"><div class="faq-q">Preciso saber programar?</div><div class="faq-a">Não. As ferramentas são no-code e low-code — você arrasta, conecta e configura. Se você sabe usar WhatsApp e Google, você consegue.</div></div>
-    <div class="faq-item"><div class="faq-q">O que são os fluxos JSON do Kit?</div><div class="faq-a">São os workflows do n8n exportados em formato JSON. Você importa com um clique e o fluxo aparece já montado. <strong>Você só configura os dados do cliente.</strong> Reduz 8–15 horas de trabalho para 2–4 horas.</div></div>
-    <div class="faq-item"><div class="faq-q">Funciona para qualquer cidade do Brasil?</div><div class="faq-a">Sim. A prospecção é por WhatsApp e Instagram — você pode atender clientes em qualquer estado sem sair de casa.</div></div>
+    <div class="faq-item"><div class="faq-q">O que são os fluxos JSON do Kit?</div><div class="faq-a">São os workflows do n8n exportados. Você importa com um clique e o fluxo aparece já montado. <strong>Você só configura os dados do cliente.</strong> Reduz 8–15 horas de trabalho para 2–4 horas.</div></div>
+    <div class="faq-item"><div class="faq-q">Funciona para qualquer cidade do Brasil?</div><div class="faq-a">Sim. A prospecção é por WhatsApp e Instagram — você atende clientes em qualquer estado sem sair de casa.</div></div>
     <div class="faq-item"><div class="faq-q">Posso cancelar a mentoria quando quiser?</div><div class="faq-a">Sim. Sem multa, sem fidelidade mínima. Você cancela via WhatsApp e a cobrança para no mês seguinte.</div></div>
-    <div class="faq-item"><div class="faq-q">Como funciona a garantia?</div><div class="faq-a">7 dias corridos. Qualquer motivo. Reembolso em até 5 dias úteis. Sem perguntas, sem burocracia.</div></div>
-    <div class="faq-item"><div class="faq-q">Por que o preço vai subir?</div><div class="faq-a">Não é gatilho falso. O suporte tem limite real de capacidade. <strong>A cada novo lote de compradores, o preço sobe.</strong> Quem entrar primeiro paga menos.</div></div>
+    <div class="faq-item"><div class="faq-q">Como funciona a garantia?</div><div class="faq-a">7 dias corridos. Qualquer motivo. Reembolso em até 5 dias úteis. Sem perguntas.</div></div>
+    <div class="faq-item"><div class="faq-q">Por que o preço vai subir?</div><div class="faq-a">O suporte tem limite real de capacidade. <strong>A cada novo lote de compradores, o preço sobe.</strong> Quem entrar primeiro paga menos e tem mais atenção.</div></div>
   </div>
 </section>
 
 <footer>
   <div class="w">
-    <p>Arquiteto de Agentes · Produto digital · Entrega imediata<br>Garantia de 7 dias · Suporte via WhatsApp<br>© 2026 · Todos os direitos reservados</p>
+    <p>
+      Arquiteto de Agentes · Produto digital · Entrega imediata<br>
+      Garantia de 7 dias · Suporte via WhatsApp<br>
+      © 2026 · Todos os direitos reservados
+    </p>
   </div>
 </footer>
 
 <script>
+// Countdown
 (function(){
-  const K='arq_dl_v3';let dl=null;
+  const K='arq_dl_v4';let dl=null;
   try{dl=localStorage.getItem(K);}catch(e){}
   if(!dl){dl=Date.now()+24*60*60*1000;try{localStorage.setItem(K,dl);}catch(e){}}
   dl=parseInt(dl);
   function pad(n){return String(n).padStart(2,'0');}
   function tick(){
     const d=Math.max(0,dl-Date.now());
-    const h=Math.floor(d/3600000),m=Math.floor((d%3600000)/60000),s=Math.floor((d%60000)/1000);
-    const el=document.getElementById('timer');if(el)el.textContent=pad(h)+':'+pad(m)+':'+pad(s);
+    const el=document.getElementById('timer');
+    if(el)el.textContent=pad(Math.floor(d/3600000))+':'+pad(Math.floor((d%3600000)/60000))+':'+pad(Math.floor((d%60000)/1000));
     if(d>0)setTimeout(tick,1000);
   }
   tick();
   let v=14;
   setInterval(function(){if(v>5&&Math.random()<.25){v--;const el=document.getElementById('vagas');if(el)el.textContent=v;}},55000);
 })();
+
+// Workflow tabs
+function showWf(idx, btn) {
+  [0,1,2].forEach(i=>{
+    const el=document.getElementById('wf'+i);
+    if(el)el.style.display=i===idx?'block':'none';
+  });
+  document.querySelectorAll('.wf-tab').forEach((t,i)=>{
+    t.classList.toggle('active',i===idx);
+  });
+}
+
+// Smooth scroll with offset for sticky nav
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',function(e){
+    const target=document.querySelector(this.getAttribute('href'));
+    if(!target)return;
+    e.preventDefault();
+    const offset=110;
+    const top=target.getBoundingClientRect().top+window.scrollY-offset;
+    window.scrollTo({top,behavior:'smooth'});
+  });
+});
 </script>
 </body>
 </html>
